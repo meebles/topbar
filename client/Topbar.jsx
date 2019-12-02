@@ -8,12 +8,12 @@ export default class Topbar extends React.Component {
         {
           id: 1,
           name: 'Dragon',
-          category: 'kitchenware',
+          category: 'kitchen',
         },
         {
           id: 2,
           name: 'Swingset',
-          category: 'toys',
+          category: 'outdoor',
         },
       ],
     };
@@ -25,7 +25,7 @@ export default class Topbar extends React.Component {
     return (
       <div>
         <div>I am the Topbar</div>
-        <p>{products}</p>
+        <p>{products[0].name}</p>
       </div>
     );
   }
