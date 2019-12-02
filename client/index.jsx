@@ -1,17 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Topbar from './Topbar.jsx';
 
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      //
-    };
-  }
-
-  render() {
-    //
-  }
-}
-
-ReactDOM.render(<App />, document.getElementById('topbar_root'));
+ReactDOM.render(<Topbar />, document.getElementById('topbar_root'));
