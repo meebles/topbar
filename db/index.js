@@ -1,9 +1,10 @@
 const mysql = require('mysql');
+const mysqlConfig = require('./mysql.config');
 
 const database = mysql.createConnection({
   host: 'localhost',
-  user: 'root',
-  password: 'password17',
+  user: mysqlConfig.user,
+  password: mysqlConfig.password,
   database: 'fec_searchbar',
 });
 
