@@ -10,15 +10,23 @@ app.use(express.json());
 app.use(express.static('dist'));
 
 app.get('/products', (req, res) => {
-  console.log('I RAN');
   model
-    .getAll()
+    .getAllProducts()
     .then((data) => {
-      console.log('The Data:', data);
       res.send(data);
     })
     .catch((err) => {
-      console.log('Is error?');
+      res.send(err);
+    });
+});
+
+app.get('/history', (req, res) => {
+  model
+    .getHistory()
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
       res.send(err);
     });
 });
