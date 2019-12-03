@@ -6,17 +6,16 @@ export default class Topbar extends React.Component {
     super(props);
     this.state = {
       isSelected: true,
-      history: [],
     };
   }
 
   render() {
-    const { isSelected, history } = this.state;
+    const { isSelected } = this.state;
 
     return isSelected ? (
       <div>
-        <input type="text" className="t_selectedInput" />
-        <SearchModal history={history} />
+        <input type="text" className="t_selectedInput" placeholder="Search for categories" />
+        <SearchModal />
       </div>
     ) : (
       <div>

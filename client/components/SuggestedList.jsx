@@ -1,20 +1,20 @@
 import React from 'react';
+import T from 'prop-types';
 import SuggestedItem from './SuggestedItem';
 
-export default class SuggestedList extends React.Component {
-  constructor(props) {
-    super(props);
+const SuggestedList = ({ suggestedItems }) => {
 
-    this.state = {
-      suggestedItems: [],
-    };
-  }
-
-  render() {
-    return (
-      <div>
-        <div>The suggestions list.</div>
+  return (
+    <div>
+      <div className="t_suggestedItemsList">
+        {suggestedItems.map((item) => (<SuggestedItem item={item} />))}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
+
+SuggestedList.propTypes = {
+  suggestedItems: T.arrayOf(T.object).isRequired,
+};
+
+export default SuggestedList;
