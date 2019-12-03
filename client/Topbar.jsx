@@ -1,4 +1,5 @@
 import React from 'react';
+import Axios from 'axios';
 
 export default class Topbar extends React.Component {
   constructor(props) {
@@ -17,15 +18,32 @@ export default class Topbar extends React.Component {
         },
       ],
     };
+
+    this.getAll = this.getAll.bind(this);
+  }
+
+  componentDidMount() {
+    this.getAll();
+  }
+
+  getAll() {
+    Axios.get('/products')
+      .then((data) => {
+        console.log(data.data);
+
+        this.setState({
+          products: data.data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   render() {
-    const { products } = this.state;
-
     return (
       <div>
         <div>I am the Topbar</div>
-        <p>{products[0].name}</p>
       </div>
     );
   }

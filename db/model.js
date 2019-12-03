@@ -2,7 +2,7 @@ const Promise = require('bluebird');
 const db = require('./index.js');
 
 module.exports.getAll = () => new Promise((resolve, reject) => {
-  const sqlString = '';
+  const sqlString = 'SELECT * FROM products;';
   const options = [];
 
   db.query(sqlString, options, (err, data) => {

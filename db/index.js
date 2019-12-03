@@ -15,3 +15,5 @@ database.connect((err) => {
     console.log('Connected to the fec_searchbar database...');
   }
 });
+
+module.exports = database;
