@@ -152,8 +152,12 @@ export default class SearchModal extends React.Component {
         >
           <form>
             <input type="text" className={selected} onFocus={this.selectSearchBar} onChange={this.onTyping} />
-            <button type="button">X</button>
-            <button type="submit">=&gt;</button>
+            {input !== '' ? (
+              <span>
+                <button type="button">X</button>
+                <button type="submit">=&gt;</button>
+              </span>
+            ) : null}
           </form>
           <div className="t_search-bar-area">
             {history.length > 0
@@ -170,13 +174,3 @@ export default class SearchModal extends React.Component {
     );
   }
 }
-
-/*  while modal is open:
-      when input is empty:
-        Search History
-        Popular Searches
-      when input not empty:
-        auto-complete options
-        category suggestions
-        suggested items thumbnails
-*/
