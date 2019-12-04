@@ -31,6 +31,29 @@ app.get('/history', (req, res) => {
     });
 });
 
+app.post('/history', (req, res) => {
+  console.log(req.body);
+  model
+    .addHistory(req.body.searchItem)
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
+
+app.delete('/history', (req, res) => {
+  model
+    .clearHistory()
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
+
 app.listen(3025, (err) => {
   if (err) {
     console.log(err);
