@@ -1,0 +1,42 @@
+.t_search-modal-container {
+  opacity:    0.5; 
+  background: #000; 
+  width:      100%;
+  height:     100%; 
+  z-index:    8;
+  top:        0; 
+  left:       0; 
+  position:   fixed; 
+}
+
+.t_search-box-overlay {
+  background-color:white;
+  opacity: 1;
+  z-index: 9;
+}
+
+.t_selectedInput {
+
+}
+
+.t_unselectedInput {
+
+}
+
+.t_name-link {
+  width: 75px;
+}
+
+.t_name-link:hover {
+  font-weight: bold;
+  background-color: grey;
+  cursor: pointer;
+}
+
+.t_search-clear-button {
+
+}
+
+.t_search-clear-button:hover {
+  cursor: pointer;
+}

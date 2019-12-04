@@ -5,11 +5,13 @@ import Axios from 'axios';
 
 import SuggestedList from './components/SuggestedList';
 import HistoryList from './components/HistoryList';
+import PopularSearches from './components/PopularSearches';
 
 export default class SearchModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      showModal: false,
       isSelected: false,
       input: '',
       products: [],
@@ -26,6 +28,8 @@ export default class SearchModal extends React.Component {
     this.clearHistory = this.clearHistory.bind(this);
     this.addHistoryItem = this.addHistoryItem.bind(this);
     this.onTyping = this.onTyping.bind(this);
+    this.selectModal = this.selectModal.bind(this);
+    this.unselectModal = this.unselectModal.bind(this);
     this.selectSearchBar = this.selectSearchBar.bind(this);
     this.unselectSearchBar = this.unselectSearchBar.bind(this);
   }
@@ -47,6 +51,7 @@ export default class SearchModal extends React.Component {
       .then((data) => {
         this.setState({
           products: data.data,
+          suggestedItems: data.data.slice(0, 6),
         });
       })
       .catch((err) => {
@@ -64,6 +69,18 @@ export default class SearchModal extends React.Component {
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  selectModal() {
+    this.setState({
+      showModal: true,
+    });
+  }
+
+  unselectModal() {
+    this.setState({
+      showModal: false,
+    });
   }
 
   selectSearchBar() {
@@ -111,7 +128,7 @@ export default class SearchModal extends React.Component {
       });
   }
 
-  searchItems() {
+  searchForSuggestedItems() {
     const { input, products } = this.state;
 
     //
@@ -119,28 +136,36 @@ export default class SearchModal extends React.Component {
 
   render() {
     const {
-      popularSearches, history, input, suggestedItems, isSelected,
+      popularSearches, history, input, suggestedItems, showModal, isSelected,
     } = this.state;
 
+    const selected = isSelected ? 't_selectedInput' : 't_unselectedInput';
 
-    return isSelected ? (
-      <div className="t_search-box-container">
-        <div className="t_search-box-overlay" onClick={this.unselectSearchBar} />
-        <input type="text" className="t_selectedInput" />
-        <div className="t_search-overlay">
-          {history.length > 0
-            ? (<HistoryList history={history} clearHistory={this.clearHistory} />) : null }
-          <div className="t_popularItems">
-            <div>Popular Items</div>
-            <ul>{popularSearches.map((item) => (<div key={`${item}`}>{item}</div>))}</ul>
+    return showModal ? (
+      <div className="t_search-modal-container" onClick={this.unselectModal}>
+        <div
+          className="t_search-box-overlay"
+          onClick={(e) => {
+            e.stopPropagation();
+            this.unselectSearchBar();
+          }}
+        >
+          <form>
+            <input type="text" className={selected} onFocus={this.selectSearchBar} onChange={this.onTyping} />
+            <button type="button">X</button>
+            <button type="submit">=&gt;</button>
+          </form>
+          <div className="t_search-bar-area">
+            {history.length > 0
+              ? (<HistoryList history={history} clearHistory={this.clearHistory} />) : null }
+            <PopularSearches popularSearches={popularSearches} />
+            {/* {input !== '' ? (<SuggestedList suggestedItems={suggestedItems} />) : null } */}
           </div>
-          {input !== '' ? (<SuggestedList suggestedItems={suggestedItems} />) : null }
         </div>
-        <div className="t_search-box-overlay" onClick={this.unselectSearchBar} />
       </div>
     ) : (
       <div>
-        <input type="text" className="t_unselectedInput" onClick={this.selectSearchBar} placeholder="Search for categories" />
+        <input type="text" className="t_unselectedInput" onClick={this.selectModal} placeholder="Search for categories" />
       </div>
     );
   }
