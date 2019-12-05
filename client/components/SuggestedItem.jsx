@@ -3,7 +3,7 @@ import T from 'prop-types';
 
 const SuggestedItem = ({ item = { real_name: 'Item not found.' } }) => {
   return (
-    <li className="t_suggested-item-container">
+    <li className="t_suggested-item-container t_name-link">
       <img src={item.image_address} alt="" />
       <span>
         <div className="t_suggested-item-name">{item.real_name}</div>

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable jsx-a11y/no-autofocus */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -15,6 +16,7 @@ export default class SearchModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentItem: 1,
       showModal: false,
       isSelected: false,
       input: '',
@@ -37,6 +39,8 @@ export default class SearchModal extends React.Component {
     this.selectSearchBar = this.selectSearchBar.bind(this);
     this.unselectSearchBar = this.unselectSearchBar.bind(this);
     this.clearInput = this.clearInput.bind(this);
+    this.searchForSuggestedItems = this.searchForSuggestedItems.bind(this);
+    this.selectSearchedItem = this.selectSearchedItem.bind(this);
   }
 
   componentDidMount() {
@@ -48,7 +52,7 @@ export default class SearchModal extends React.Component {
     this.setState({
       input: event.target.value,
     });
-    this.searchForSuggestedItems();
+    this.searchForSuggestedItems(event.target.value);
   }
 
   getAllProducts() {
@@ -105,8 +109,6 @@ export default class SearchModal extends React.Component {
     this.setState({
       input: '',
     });
-
-    console.log(event);
   }
 
   addHistoryItem(searchItem) {
@@ -143,13 +145,25 @@ export default class SearchModal extends React.Component {
       });
   }
 
-  searchForSuggestedItems() {
-    const { input, products } = this.state;
-    let suggestedItems = _.filter(products, (item) => item.simple_name.includes(input));
+  searchForSuggestedItems(input) {
+    const { products } = this.state;
+    let suggestedItems = _.filter(products, (item) => {
+      return item.simple_name.includes(input)
+      || item.description.toLowerCase().includes(input)
+      || item.category.includes(input);
+    });
     suggestedItems = suggestedItems.slice(0, 6);
     this.setState({
       suggestedItems,
     });
+  }
+
+  selectSearchedItem(event) {
+    //
+  }
+
+  rotateSuggestedSearches() {
+    const suggested = [];
   }
 
   render() {
@@ -160,54 +174,63 @@ export default class SearchModal extends React.Component {
     const selected = isSelected ? 't_selectedInput' : 't_unselectedInput';
 
     return showModal ? (
-      <div className="t_search-modal-container" onClick={this.unselectModal}>
-        <div
-          className="t_search-box-overlay"
-          onClick={(e) => {
-            e.stopPropagation();
-            this.unselectSearchBar();
-          }}
-        >
-          <form>
-            <input
-              type="text"
-              value={input}
-              autoFocus
-              className={`${selected} t_input-bar`}
-              onClick={(e) => {
-                this.selectSearchBar();
-                e.stopPropagation();
-              }}
-              onChange={this.onTyping}
-              placeholder="Search for categories"
-            />
-            {input !== '' ? (
-              <span>
-                <button type="button" onClick={this.clearInput}>X</button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    this.addHistoryItem(input);
+      <div>
+        <div className="t_search-modal-overlay" onClick={this.unselectModal}>
+          <div
+            className="t_search-box-container"
+            onClick={(e) => {
+              e.stopPropagation();
+              this.unselectSearchBar();
+            }}
+          >
+            <form className="t_search-form">
+              <div className="t_search-field">
+                <input
+                  type="text"
+                  value={input}
+                  autoFocus
+                  className={`${selected} t_input-bar`}
+                  onClick={(e) => {
+                    this.selectSearchBar();
+                    e.stopPropagation();
                   }}
-                >
-                  =&gt;
-                </button>
-              </span>
-            ) : null}
-          </form>
-          <div className="t_search-bar-area">
-            {history.length > 0 && input === ''
-              ? (<HistoryList history={history} clearHistory={this.clearHistory} />) : null }
-            {input === '' ? <PopularSearches popularSearches={popularSearches} /> : null}
-            {input !== '' ? <AutoFillList autoFillOptions={['Some option', 'Another option']} /> : null }
-            {input !== '' ? <CategoryLinks linksList={['A link', 'Another link']} /> : null }
-            {input !== '' && suggestedItems.length > 0 ? (<SuggestedList suggestedItems={suggestedItems} />) : null }
+                  onChange={this.onTyping}
+                  placeholder={`Search for ${'categories'}`}
+                />
+                {input !== '' ? (
+                  <span className="t_search-buttons-wrapper">
+                    <button
+                      type="button"
+                      className="t_search-button t_search-button-reset"
+                      onClick={this.clearInput}
+                    />
+                    <button
+                      type="button"
+                      className="t_search-button t_search-button-search"
+                      onClick={() => {
+                        this.addHistoryItem(input);
+                      }}
+                    />
+                  </span>
+                ) : null}
+              </div>
+            </form>
+            <div className="t_under-search-field">
+              <div className="t_search-bar-area">
+                {history.length > 0 && input === ''
+                  ? (<HistoryList history={history} clearHistory={this.clearHistory} />) : null }
+                {input === '' ? <PopularSearches popularSearches={popularSearches} /> : null}
+                {input !== '' ? <AutoFillList autoFillOptions={['Some option', 'Another option']} /> : null }
+                {input !== '' ? <CategoryLinks linksList={['A link', 'Another link']} /> : null }
+                {input !== '' && suggestedItems.length > 0 ? (<SuggestedList suggestedItems={suggestedItems} />) : null }
+              </div>
+            </div>
           </div>
         </div>
       </div>
     ) : (
-      <div>
-        <input type="text" className="t_unselectedInput t_input-bar" onClick={this.selectModal} placeholder="Search for categories" />
+      <div className="t_search-field">
+        <input type="text" value={input} readOnly className="t_unselectedInput t_input-bar" onClick={this.selectModal} placeholder="Search for categories" />
       </div>
     );
   }
