@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Topbar from './Topbar';
+import SearchModal from './SearchModal';
 
 // eslint-disable-next-line no-undef
-ReactDOM.render(<Topbar />, document.getElementById('topbar_root'));
+ReactDOM.render(<SearchModal />, document.getElementById('topbar_root'));

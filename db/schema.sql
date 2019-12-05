@@ -4,6 +4,17 @@ CREATE DATABASE fec_searchbar;
 
 USE fec_searchbar;
 
+CREATE TABLE history (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  searchItem TEXT
+);
+
+INSERT INTO history (searchItem) VALUES ('desk');
+INSERT INTO history (searchItem) VALUES ('kitchen');
+INSERT INTO history (searchItem) VALUES ('outdoor');
+INSERT INTO history (searchItem) VALUES ('bed');
+INSERT INTO history (searchItem) VALUES ('meatballs');
+
 CREATE TABLE products (
   id INT PRIMARY KEY,
   real_name TEXT,
