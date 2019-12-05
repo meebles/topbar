@@ -2,9 +2,9 @@ import React from 'react';
 import T from 'prop-types';
 
 const CategoryLinks = ({ linksList }) => (
-  <div className="t_category-links">
-    {linksList.map((item) => (<div key={item} className="t_category-link-item">{item}</div>))}
-  </div>
+  <ol className="t_category-links">
+    {linksList.map((item) => (<li key={item} className="t_category-link-item">{item}</li>))}
+  </ol>
 );
 
 CategoryLinks.propTypes = {

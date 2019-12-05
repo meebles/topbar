@@ -3,10 +3,13 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import Axios from 'axios';
+import _ from 'lodash';
 
 import SuggestedList from './components/SuggestedList';
 import HistoryList from './components/HistoryList';
 import PopularSearches from './components/PopularSearches';
+import CategoryLinks from './components/CategoryLinks';
+import AutoFillList from './components/AutoFill';
 
 export default class SearchModal extends React.Component {
   constructor(props) {
@@ -41,11 +44,11 @@ export default class SearchModal extends React.Component {
     this.getHistory();
   }
 
-
   onTyping(event) {
     this.setState({
       input: event.target.value,
     });
+    this.searchForSuggestedItems();
   }
 
   getAllProducts() {
@@ -53,7 +56,6 @@ export default class SearchModal extends React.Component {
       .then((data) => {
         this.setState({
           products: data.data,
-          suggestedItems: data.data.slice(0, 6),
         });
       })
       .catch((err) => {
@@ -130,10 +132,11 @@ export default class SearchModal extends React.Component {
   clearHistory() {
     Axios.delete('/history')
       .then((data) => {
-        console.log(data);
-        this.setState({
-          history: [],
-        });
+        if (data.data.affectedRows > 0) {
+          this.setState({
+            history: [],
+          });
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -142,8 +145,11 @@ export default class SearchModal extends React.Component {
 
   searchForSuggestedItems() {
     const { input, products } = this.state;
-
-    //
+    let suggestedItems = _.filter(products, (item) => item.simple_name.includes(input));
+    suggestedItems = suggestedItems.slice(0, 6);
+    this.setState({
+      suggestedItems,
+    });
   }
 
   render() {
@@ -167,7 +173,7 @@ export default class SearchModal extends React.Component {
               type="text"
               value={input}
               autoFocus
-              className={selected}
+              className={`${selected} t_input-bar`}
               onClick={(e) => {
                 this.selectSearchBar();
                 e.stopPropagation();
@@ -192,14 +198,16 @@ export default class SearchModal extends React.Component {
           <div className="t_search-bar-area">
             {history.length > 0 && input === ''
               ? (<HistoryList history={history} clearHistory={this.clearHistory} />) : null }
-            <PopularSearches popularSearches={popularSearches} />
-            {/* {input !== '' ? (<SuggestedList suggestedItems={suggestedItems} />) : null } */}
+            {input === '' ? <PopularSearches popularSearches={popularSearches} /> : null}
+            {input !== '' ? <AutoFillList autoFillOptions={['Some option', 'Another option']} /> : null }
+            {input !== '' ? <CategoryLinks linksList={['A link', 'Another link']} /> : null }
+            {input !== '' && suggestedItems.length > 0 ? (<SuggestedList suggestedItems={suggestedItems} />) : null }
           </div>
         </div>
       </div>
     ) : (
       <div>
-        <input type="text" className="t_unselectedInput" onClick={this.selectModal} placeholder="Search for categories" />
+        <input type="text" className="t_unselectedInput t_input-bar" onClick={this.selectModal} placeholder="Search for categories" />
       </div>
     );
   }

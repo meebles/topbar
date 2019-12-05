@@ -1,3 +1,8 @@
+@font-face {
+  font-family: Noto-Sans;
+  src: url('./fonts/font.tff');
+}
+
 .t_search-modal-container {
   background: rgba(0, 0, 0, 0.3); 
   width:      100%;
@@ -6,11 +11,13 @@
   top:        0; 
   left:       0; 
   position:   fixed; 
+  cursor: pointer;
 }
 
 .t_search-box-overlay {
   background-color:white;
   z-index: 9;
+  cursor: initial;
 }
 
 .t_selectedInput {
@@ -43,4 +50,16 @@
 
 .t_search-clear-button:hover {
   cursor: pointer;
+}
+
+.t_auto-fill-list {
+  list-style: none;
+}
+
+.t_category-links {
+  list-style: none;
+}
+
+.t_suggested-list {
+  list-style: none;
 }
