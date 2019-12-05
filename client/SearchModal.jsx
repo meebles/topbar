@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-autofocus */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
@@ -32,6 +33,7 @@ export default class SearchModal extends React.Component {
     this.unselectModal = this.unselectModal.bind(this);
     this.selectSearchBar = this.selectSearchBar.bind(this);
     this.unselectSearchBar = this.unselectSearchBar.bind(this);
+    this.clearInput = this.clearInput.bind(this);
   }
 
   componentDidMount() {
@@ -74,6 +76,7 @@ export default class SearchModal extends React.Component {
   selectModal() {
     this.setState({
       showModal: true,
+      isSelected: true,
     });
   }
 
@@ -93,6 +96,15 @@ export default class SearchModal extends React.Component {
     this.setState({
       isSelected: false,
     });
+  }
+
+  clearInput(event) {
+    event.preventDefault();
+    this.setState({
+      input: '',
+    });
+
+    console.log(event);
   }
 
   addHistoryItem(searchItem) {
@@ -151,16 +163,27 @@ export default class SearchModal extends React.Component {
           }}
         >
           <form>
-            <input type="text" className={selected} onFocus={this.selectSearchBar} onChange={this.onTyping} />
+            <input
+              type="text"
+              value={input}
+              autoFocus
+              className={selected}
+              onClick={(e) => {
+                this.selectSearchBar();
+                e.stopPropagation();
+              }}
+              onChange={this.onTyping}
+              placeholder="Search for categories"
+            />
             {input !== '' ? (
               <span>
-                <button type="button">X</button>
+                <button type="button" onClick={this.clearInput}>X</button>
                 <button type="submit">=&gt;</button>
               </span>
             ) : null}
           </form>
           <div className="t_search-bar-area">
-            {history.length > 0
+            {history.length > 0 && input === ''
               ? (<HistoryList history={history} clearHistory={this.clearHistory} />) : null }
             <PopularSearches popularSearches={popularSearches} />
             {/* {input !== '' ? (<SuggestedList suggestedItems={suggestedItems} />) : null } */}
