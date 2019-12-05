@@ -24,11 +24,11 @@ export default class SearchModal extends React.Component {
       popularSearches: ['desk', 'dresser', 'mirror', 'tv stand', 'shelves', 'kallax'],
     };
 
+    this.onTyping = this.onTyping.bind(this);
     this.getAllProducts = this.getAllProducts.bind(this);
     this.getHistory = this.getHistory.bind(this);
     this.clearHistory = this.clearHistory.bind(this);
     this.addHistoryItem = this.addHistoryItem.bind(this);
-    this.onTyping = this.onTyping.bind(this);
     this.selectModal = this.selectModal.bind(this);
     this.unselectModal = this.unselectModal.bind(this);
     this.selectSearchBar = this.selectSearchBar.bind(this);
@@ -178,7 +178,14 @@ export default class SearchModal extends React.Component {
             {input !== '' ? (
               <span>
                 <button type="button" onClick={this.clearInput}>X</button>
-                <button type="submit">=&gt;</button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    this.addHistoryItem(input);
+                  }}
+                >
+                  =&gt;
+                </button>
               </span>
             ) : null}
           </form>
