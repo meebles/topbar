@@ -32,7 +32,6 @@ app.get('/history', (req, res) => {
 });
 
 app.post('/history', (req, res) => {
-  console.log(req.body);
   model
     .addHistory(req.body.searchItem)
     .then((data) => {

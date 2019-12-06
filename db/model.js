@@ -38,7 +38,7 @@ module.exports.clearHistory = () => new Promise((resolve, reject) => {
 });
 
 module.exports.addHistory = (searchItem) => new Promise((resolve, reject) => {
-  const sqlString = 'INSERT INTO history (searchItem) VALUES (?) ON DUPLICATE KEY UPDATE;';
+  const sqlString = 'INSERT INTO history (searchItem) VALUES (?);';
   const options = [searchItem];
 
   db.query(sqlString, options, (err, data) => {

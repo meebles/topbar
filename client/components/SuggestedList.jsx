@@ -3,10 +3,10 @@ import T from 'prop-types';
 import SuggestedItem from './SuggestedItem';
 
 const SuggestedList = ({ suggestedItems }) => (
-  <div>
-    <div className="t_suggestedItemsList">
-      {suggestedItems.map((item) => (<SuggestedItem item={item} />))}
-    </div>
+  <div className="t_suggestions-list-container">
+    <ol className="t_suggested-list">
+      {suggestedItems.map((item) => (<SuggestedItem key={item.id} item={item} />))}
+    </ol>
   </div>
 );
 
