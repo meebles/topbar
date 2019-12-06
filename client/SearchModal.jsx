@@ -11,6 +11,7 @@ import HistoryList from './components/HistoryList';
 import PopularSearches from './components/PopularSearches';
 import CategoryLinks from './components/CategoryLinks';
 import AutoFillList from './components/AutoFill';
+import linksList from './assets/linksList';
 
 export default class SearchModal extends React.Component {
   constructor(props) {
@@ -27,6 +28,7 @@ export default class SearchModal extends React.Component {
         searchItem: 'lamps',
       }],
       suggestedItems: [],
+      linksList,
       popularSearches: ['desk', 'dresser', 'mirror', 'tv stand', 'shelves', 'kallax'],
     };
 
@@ -176,10 +178,12 @@ export default class SearchModal extends React.Component {
 
   render() {
     const {
-      popularSearches, history, input, suggestedItems, showModal, isSelected,
+      popularSearches, history, input, suggestedItems, showModal, isSelected, linksList,
     } = this.state;
 
     const selected = isSelected ? 't_selectedInput' : 't_unselectedInput';
+
+    const isFirstChild = history.length === 0 ? true : false;
 
     return showModal ? (
       <div>
@@ -223,13 +227,13 @@ export default class SearchModal extends React.Component {
                 ) : null}
               </div>
             </form>
-            <div className="t_under-search-field">
+            <div className="t_under-search-container">
               <div className="t_search-bar-area">
                 {history.length > 0 && input === ''
                   ? (<HistoryList history={history} clearHistory={this.clearHistory} />) : null }
-                {input === '' ? <PopularSearches popularSearches={popularSearches} /> : null}
+                {input === '' ? <PopularSearches popularSearches={popularSearches} isFirstChild={isFirstChild} /> : null}
                 {input !== '' ? <AutoFillList autoFillOptions={['Did you mean "swedish meatballs"?']} /> : null }
-                {input !== '' ? <CategoryLinks linksList={['LØVELI LAKES', 'TRI A MØØS VACATION?']} /> : null }
+                {input !== '' ? <CategoryLinks linksList={linksList} /> : null }
                 {input !== '' && suggestedItems.length > 0
                   ? (
                     <SuggestedList
