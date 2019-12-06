@@ -220,8 +220,8 @@ export default class SearchModal extends React.Component {
                 {history.length > 0 && input === ''
                   ? (<HistoryList history={history} clearHistory={this.clearHistory} />) : null }
                 {input === '' ? <PopularSearches popularSearches={popularSearches} /> : null}
-                {input !== '' ? <AutoFillList autoFillOptions={['Some option', 'Another option']} /> : null }
-                {input !== '' ? <CategoryLinks linksList={['A link', 'Another link']} /> : null }
+                {input !== '' ? <AutoFillList autoFillOptions={['I AM AUTØFILL', 'MØAR AUTOFILL']} /> : null }
+                {input !== '' ? <CategoryLinks linksList={['LOVELI LAKES', 'TRI A MØØS VACATION']} /> : null }
                 {input !== '' && suggestedItems.length > 0 ? (<SuggestedList suggestedItems={suggestedItems} />) : null }
               </div>
             </div>
