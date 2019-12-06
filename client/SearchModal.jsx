@@ -16,6 +16,7 @@ export default class SearchModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // eslint-disable-next-line react/no-unused-state
       currentItem: 1,
       showModal: false,
       isSelected: false,
@@ -158,10 +159,17 @@ export default class SearchModal extends React.Component {
     });
   }
 
-  selectSearchedItem(event) {
-    //
+  selectSearchedItem(selectedItemId) {
+    this.setState({
+      // eslint-disable-next-line react/no-unused-state
+      currentItem: selectedItemId,
+      isSelected: false,
+      showModal: false,
+      input: '',
+    });
   }
 
+  //  this is for the search bar placeholder text
   rotateSuggestedSearches() {
     const suggested = [];
   }
@@ -222,7 +230,13 @@ export default class SearchModal extends React.Component {
                 {input === '' ? <PopularSearches popularSearches={popularSearches} /> : null}
                 {input !== '' ? <AutoFillList autoFillOptions={['I AM AUTØFILL', 'MØAR AUTOFILL']} /> : null }
                 {input !== '' ? <CategoryLinks linksList={['LOVELI LAKES', 'TRI A MØØS VACATION']} /> : null }
-                {input !== '' && suggestedItems.length > 0 ? (<SuggestedList suggestedItems={suggestedItems} />) : null }
+                {input !== '' && suggestedItems.length > 0
+                  ? (
+                    <SuggestedList
+                      suggestedItems={suggestedItems}
+                      selectSearchedItem={this.selectSearchedItem}
+                    />
+                  ) : null }
               </div>
             </div>
           </div>
