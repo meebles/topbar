@@ -11,11 +11,11 @@ const SuggestedItem = ({ item = { real_name: 'Item not found.' }, selectSearched
         selectSearchedItem(item.id);
       }}
     >
-      <img src={item.image_address} alt="" />
-      <span>
+      <img src={item.image_address} alt="" className="t_suggested-item-image" />
+      <div className="t_suggested-item-info">
         <div className="t_suggested-item-name">{item.real_name}</div>
-        <div>{item.description}</div>
-      </span>
+        <div className="t_suggested-item-description">{item.description}</div>
+      </div>
     </li>
   );
 };
