@@ -12,6 +12,7 @@ import PopularSearches from './components/PopularSearches';
 import CategoryLinks from './components/CategoryLinks';
 import AutoFillList from './components/AutoFill';
 import linksList from './assets/linksList';
+import wordTree from './assets/prefixTree';
 
 export default class SearchModal extends React.Component {
   constructor(props) {
@@ -187,7 +188,13 @@ export default class SearchModal extends React.Component {
 
     return showModal ? (
       <div>
-        <div className="t_search-modal-overlay" onClick={this.unselectModal}>
+        <div
+          className="t_search-modal-overlay"
+          onClick={(e) => {
+            this.unselectModal();
+            e.stopPropagation();
+          }}
+        >
           <div
             className="t_search-box-container"
             onClick={(e) => {
