@@ -1,20 +1,19 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable no-else-return */
-/* eslint-disable no-param-reassign */
 /* eslint-disable no-restricted-syntax */
-const dictionary = require('./autoFillDictionary');
+import dictionary from './dictionary';
 
 export default class PrefixTree {
   constructor(...args) {
     this.complete = false;
     this.children = {};
     for (const string of args) {
-      this.add(string.toLowerCase());
+      this.add(string);
     }
   }
 
   find(string, allowPartial = false, returnTree = false) {
-    string = string.toLowerCase();
     const char = string.charAt(0);
     const rest = string.slice(1);
     if (char === '' && (allowPartial || this.complete)) {
@@ -35,7 +34,6 @@ export default class PrefixTree {
   }
 
   add(string) {
-    string = string.toLowerCase();
     const char = string.charAt(0);
     const rest = string.slice(1);
     if (!this.children.hasOwnProperty(char)) {
@@ -49,7 +47,6 @@ export default class PrefixTree {
   }
 
   remove(string) {
-    string = string.toLowerCase();
     const char = string.charAt(0);
     const rest = string.slice(1);
     if (char === '') {
