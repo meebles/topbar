@@ -12,7 +12,10 @@ import PopularSearches from './components/PopularSearches';
 import CategoryLinks from './components/CategoryLinks';
 import AutoFillList from './components/AutoFill';
 import linksList from './assets/linksList';
-import wordTree from './assets/prefixTree';
+import PrefixTree from './assets/prefixTree';
+import dictionary from './assets/dictionary';
+
+const wordTree = new PrefixTree(...dictionary);
 
 export default class SearchModal extends React.Component {
   constructor(props) {
@@ -29,7 +32,7 @@ export default class SearchModal extends React.Component {
         searchItem: 'lamps',
       }],
       suggestedItems: [],
-      linksList,
+      autoFillOptions: [],
       popularSearches: ['desk', 'dresser', 'mirror', 'tv stand', 'shelves', 'kallax'],
     };
 
@@ -53,8 +56,11 @@ export default class SearchModal extends React.Component {
   }
 
   onTyping(event) {
+    const autocompletes = wordTree.getCompleteRemaindersFrom(event.target.value);
+    autocompletes.sort();
     this.setState({
       input: event.target.value,
+      autoFillOptions: autocompletes,
     });
     this.searchForSuggestedItems(event.target.value);
   }
@@ -172,19 +178,14 @@ export default class SearchModal extends React.Component {
     });
   }
 
-  //  this is for the search bar placeholder text
-  rotateSuggestedSearches() {
-    const suggested = [];
-  }
-
   render() {
     const {
-      popularSearches, history, input, suggestedItems, showModal, isSelected, linksList,
+      popularSearches, history, input, suggestedItems, showModal, isSelected, autoFillOptions,
     } = this.state;
 
     const selected = isSelected ? 't_selectedInput' : 't_unselectedInput';
 
-    const isFirstChild = history.length === 0 ? true : false;
+    const isFirstChild = history.length === 0;
 
     return showModal ? (
       <div>
@@ -239,7 +240,7 @@ export default class SearchModal extends React.Component {
                 {history.length > 0 && input === ''
                   ? (<HistoryList history={history} clearHistory={this.clearHistory} />) : null }
                 {input === '' ? <PopularSearches popularSearches={popularSearches} isFirstChild={isFirstChild} /> : null}
-                {input !== '' ? <AutoFillList autoFillOptions={['Did you mean "swedish meatballs"?']} /> : null }
+                {input !== '' ? <AutoFillList autoFillOptions={autoFillOptions} currentInput={input} /> : null }
                 {input !== '' ? <CategoryLinks linksList={linksList} /> : null }
                 {input !== '' && suggestedItems.length > 0
                   ? (

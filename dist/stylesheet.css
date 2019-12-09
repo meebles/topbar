@@ -254,8 +254,8 @@
   background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' width='24'%3E%3Cpath fill-rule='evenodd' d='M17.597 5l-5.592 5.592L6.414 5 5 6.415l5.591 5.591L5 17.597l1.414 1.414 5.591-5.592 5.592 5.592 1.414-1.414-5.592-5.591 5.592-5.591z'/%3E%3C/svg%3E");
 }
 
-.t_auto-fill-list {
-  list-style: none;
+.t_autofill-suggestion {
+  font-family: NotoSans-Bold;
 }
 
 .t_suggestions-list-container {

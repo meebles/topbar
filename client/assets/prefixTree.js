@@ -1,14 +1,14 @@
+//  === AUTHOR: Gabe Anderson (FEC Teammate) ===  //
+
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable no-else-return */
 /* eslint-disable no-restricted-syntax */
-import dictionary from './dictionary';
-
 export default class PrefixTree {
-  constructor(...args) {
+  constructor() {
     this.complete = false;
     this.children = {};
-    for (const string of args) {
+    for (const string of arguments) {
       this.add(string);
     }
   }
@@ -94,5 +94,3 @@ export default class PrefixTree {
     return branch === null ? [] : branch.getCompleteChildren('', limit)[0];
   }
 }
-
-module.exports = new PrefixTree(dictionary);
