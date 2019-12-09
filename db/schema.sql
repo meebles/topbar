@@ -12,7 +12,7 @@ CREATE TABLE history (
 INSERT INTO history (searchItem) VALUES ('desk');
 INSERT INTO history (searchItem) VALUES ('kitchen');
 INSERT INTO history (searchItem) VALUES ('outdoor');
-INSERT INTO history (searchItem) VALUES ('bed');
+INSERT INTO history (searchItem) VALUES ('Where is Sweden?');
 INSERT INTO history (searchItem) VALUES ('meatballs');
 
 CREATE TABLE products (
