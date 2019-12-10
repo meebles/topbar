@@ -212,7 +212,8 @@
   position: relative;
   display: flex;
   width: inherit;
-  padding: .75rem 1rem;
+  padding: .5rem 1rem;
+  padding-left: 2rem;
   overflow-x: hidden;
   color: #111;
   word-break: break-word;
@@ -243,8 +244,8 @@
 
 .t_search-title {
   display: flex;
-  align-items: center;
   margin: .5rem 1rem .5rem 1rem;
+  padding-left: 1rem;
   font-size: .75rem;
   font-weight: 400;
   color: #959595;
@@ -311,10 +312,7 @@
 }
 
 .t_suggested-item-container::after{
-  display: flex;
-  position: relative;
-  margin-right: 1rem;
-  justify-self: center;
+  justify-self: flex-end;
   align-self: center;
   opacity: 0;
   background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' width='24'%3E%3Cpath d='M12.29 18.37l1.42 1.4 7.7-7.77-7.71-7.64-1.4 1.42L17.57 11H4v2h13.6l-5.31 5.37z'/%3E%3C/svg%3E");
@@ -398,6 +396,7 @@
   flex-direction: row;
   align-items: center;
   margin: 0;
+  margin-left: 1rem;
   padding-left: 0;
   padding-top: .4rem;
   padding-bottom: .5rem;
@@ -422,8 +421,8 @@
 }
 
 .t_nav-wrapper {
-  padding-top: .1rem;
-  padding-bottom: .5rem;
+  padding-top: .3rem;
+  padding-bottom: .2rem;
   z-index: 101;
   background: #fff;
   margin: 0;
@@ -486,6 +485,7 @@
   border-bottom: none;
   font-family: NotoSans-Bold;
   margin: 0;
+  margin-right: .5rem;
   padding: .3rem;
   padding-left: 1rem;
   outline: none;

@@ -22,7 +22,7 @@ const NavBar = () => (
                 <path d="M 19.71 9.29 L 18.29 7.88 L 12 14.17 L 5.7 7.88 L 4.29 9.3 L 12 17 Z" />
               </svg>
             </li>
-            <li>Ideas & Inspiration</li>
+            <li>Ideas &amp; Inspiration</li>
             <li>New at IKEA</li>
           </ul>
         </div>
@@ -33,7 +33,7 @@ const NavBar = () => (
             <svg>
               <path d="M15,12H9a5,5,0,0,0-5,5v4H20V17A5,5,0,0,0,15,12Zm3,7H6V17a3,3,0,0,1,3-3h6a3,3,0,0,1,3,3Zm-6-8A4,4,0,1,0,8,7,4,4,0,0,0,12,11Zm0-6a2,2,0,1,1-2,2A2,2,0,0,1,12,5Z" />
             </svg>
-            <div className="t_svg-icon-fill"/>
+            <div className="t_svg-icon-fill" />
           </li>
           <li className="t_mini-link">
             <svg>
