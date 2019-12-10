@@ -190,7 +190,7 @@ export default class SearchModal extends React.Component {
     const isFirstChild = history.length === 0;
 
     return showModal ? (
-      <div>
+      <div className="t_all-wrapper">
         <header className="t_header">
           <HeaderLinks />
           <NavBar />
@@ -202,6 +202,7 @@ export default class SearchModal extends React.Component {
             e.stopPropagation();
           }}
         />
+        <div className="t_search-field-wrapper t_search-field-active">
           <div
             className="t_search-box-container"
             onClick={(event) => {
@@ -264,15 +265,18 @@ export default class SearchModal extends React.Component {
               </div>
             </div>
           </div>
+        </div>
       </div>
     ) : (
-      <div>
+      <div className="t_all-wrapper">
         <header className="t_header">
           <HeaderLinks />
           <NavBar />
         </header>
-        <div className="t_search-field">
-          <input type="text" value={input} readOnly className="t_unselectedInput t_input-bar" onClick={this.selectModal} placeholder="Search for categories" />
+        <div className="t_search-field-wrapper">
+          <div className="t_search-field">
+            <input type="text" value={input} readOnly className="t_unselectedInput t_input-bar" onClick={this.selectModal} placeholder="Search for categories" />
+          </div>
         </div>
       </div>
     );
