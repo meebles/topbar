@@ -191,17 +191,17 @@ export default class SearchModal extends React.Component {
 
     return showModal ? (
       <div>
-        {/* <header className="t_header">
+        <header className="t_header">
           <HeaderLinks />
           <NavBar />
-        </header> */}
+        </header>
         <div
           className="t_search-modal-overlay"
           onClick={(e) => {
             this.unselectModal();
             e.stopPropagation();
           }}
-        >
+        />
           <div
             className="t_search-box-container"
             onClick={(event) => {
@@ -264,14 +264,13 @@ export default class SearchModal extends React.Component {
               </div>
             </div>
           </div>
-        </div>
       </div>
     ) : (
       <div>
-        {/* <header className="t_header">
+        <header className="t_header">
           <HeaderLinks />
           <NavBar />
-        </header> */}
+        </header>
         <div className="t_search-field">
           <input type="text" value={input} readOnly className="t_unselectedInput t_input-bar" onClick={this.selectModal} placeholder="Search for categories" />
         </div>

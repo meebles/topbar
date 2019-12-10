@@ -370,7 +370,7 @@
   margin: 0;
   padding-left: 0;
   padding-top: .4rem;
-  padding-bottom: .6rem;
+  padding-bottom: .5rem;
   box-sizing: inherit;
   list-style: none;
 }
@@ -378,7 +378,9 @@
 .t_header-list li {
   list-style-type: none;
   margin: 0 1rem;
-  color: #666;
+  padding-top: .1rem;
+  padding-left: .75rem;
+  color: rgb(126, 124, 124);
   text-decoration: none;
   position: relative;
   font-size: .75rem;
@@ -391,7 +393,7 @@
 }
 
 .t_nav-wrapper {
-  padding-top: .5rem;
+  padding-top: .1rem;
   padding-bottom: .5rem;
   z-index: 101;
   background: #fff;
@@ -411,6 +413,8 @@
 .t_logo-container {
   margin: 0;
   padding: 0;
+  padding-top: .25rem;
+  cursor: pointer;
 }
 
 .t_nav-links-container {
@@ -426,11 +430,13 @@
   left: -100%;
   flex-direction: column;
   margin: 0;
+  margin-left: 1rem;
   padding: 0;
 }
 
 .t_nav-links-wrapper {
   flex-direction: row;
+  align-items: center;
   height: auto;
   overflow: visible;
 }
@@ -438,24 +444,72 @@
 .t_nav-links-list {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
   padding: 0;
-  margin-top: 0;
+  margin: 0;
+  margin-left: 1rem;
   flex: 1 0 auto;
   list-style: none;
 }
 
 .t_nav-links-list li {
   border-bottom: none;
+  font-family: NotoSans-Bold;
+  margin: 0;
+  padding: .3rem;
+  padding-left: 1rem;
+  outline: none;
+  color: #111;
+  cursor: pointer;
+}
+
+.t_nav-links-list li:hover {
+  text-decoration: underline;
+}
+
+.t_arrow-after-item {
+  height: 1rem;
+  width: 1.5rem;
+  padding: 0;
+  margin-right: .5rem;
+  transform: translateY(25%); 
+  overflow: hidden;
+}
+
+.t_mini-links-container {
+  display: flex; 
+  justify-self: flex-end;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+}
+
+.t_mini-links-list {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  margin-right: .5rem;
+  padding: 0;
   outline: none;
-  font-weight: 700;
-  text-align: inherit;
-  word-break: break-word;
-  white-space: nowrap;
-  color: #111;
-  fill: #111;
+}
+
+.t_mini-link {
+  display: inline-block;
+  margin-left: 1.5rem;
+  cursor: pointer;
+}
+
+.t_mini-link:hover {
+
+}
+
+.t_mini-link svg {
+  height: 1.5rem;
+  width: 1.5rem;
+  top: 50%;
+  left: 50%;
+  right: 0;
+  bottom: 0;
+  display: inline-block;
+  line-height: 0;
 }
