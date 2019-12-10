@@ -3,7 +3,7 @@ import React from 'react';
 const NavBar = () => (
   <div className="t_nav-wrapper">
     <div className="t_nav-container">
-      <div className="t_IKEA-logo-container">
+      <div className="t_logo-container">
         <img src="https://team-meat-searchbar-images.s3.us-east-2.amazonaws.com/logo.png" alt="" />
       </div>
       <div className="t_nav-links-container">
