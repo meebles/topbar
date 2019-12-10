@@ -14,6 +14,8 @@ import AutoFillList from './components/AutoFill';
 import linksList from './assets/linksList';
 import PrefixTree from './assets/prefixTree';
 import dictionary from './assets/dictionary';
+import HeaderLinks from './components/HeaderLinks';
+import NavBar from './components/NavBar';
 
 const wordTree = new PrefixTree(...dictionary);
 
@@ -189,6 +191,10 @@ export default class SearchModal extends React.Component {
 
     return showModal ? (
       <div>
+        <header className="t_header">
+          <HeaderLinks />
+          <NavBar />
+        </header>
         <div
           className="t_search-modal-overlay"
           onClick={(e) => {
@@ -198,8 +204,8 @@ export default class SearchModal extends React.Component {
         >
           <div
             className="t_search-box-container"
-            onClick={(e) => {
-              e.stopPropagation();
+            onClick={(event) => {
+              event.stopPropagation();
               this.unselectSearchBar();
             }}
           >
@@ -210,11 +216,17 @@ export default class SearchModal extends React.Component {
                   value={input}
                   autoFocus
                   className={`${selected} t_input-bar`}
-                  onClick={(e) => {
+                  onClick={(event) => {
                     this.selectSearchBar();
-                    e.stopPropagation();
+                    event.stopPropagation();
                   }}
                   onChange={this.onTyping}
+                  onKeyPress={(event) => {
+                    if (event.key === 'Enter') {
+                      this.addHistoryItem(input);
+                      event.preventDefault();
+                    }
+                  }}
                   placeholder={`Search for ${'categories'}`}
                 />
                 {input !== '' ? (
@@ -255,8 +267,14 @@ export default class SearchModal extends React.Component {
         </div>
       </div>
     ) : (
-      <div className="t_search-field">
-        <input type="text" value={input} readOnly className="t_unselectedInput t_input-bar" onClick={this.selectModal} placeholder="Search for categories" />
+      <div>
+        <header className="t_header">
+          <HeaderLinks />
+          <NavBar />
+        </header>
+        <div className="t_search-field">
+          <input type="text" value={input} readOnly className="t_unselectedInput t_input-bar" onClick={this.selectModal} placeholder="Search for categories" />
+        </div>
       </div>
     );
   }

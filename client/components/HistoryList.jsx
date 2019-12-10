@@ -6,7 +6,7 @@ const HistoryList = ({ history, clearHistory }) => {
     <div className="t_search-history-list">
       <div className="t_search-title">Your search history</div>
       <ul className="t_name-link-list">
-        {history.map((item) => (<div key={item.searchItem} className="t_name-link">{item.searchItem}</div>))}
+        {history.map((item) => (<div key={item.searchItem} className="t_name-link t_history-item">{item.searchItem}</div>))}
         <button onClick={clearHistory} type="button" className="t_history-clear-button">Clear search history</button>
       </ul>
     </div>
