@@ -53,10 +53,12 @@ app.delete('/history', (req, res) => {
     });
 });
 
+//
+
 app.listen(3025, (err) => {
   if (err) {
     console.log(err);
   } else {
-    console.log('Listening on port 3025...');
+    console.log('Listening on server port...');
   }
 });

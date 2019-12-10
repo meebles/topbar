@@ -295,7 +295,7 @@
 .t_suggested-list {
   display: flex;
   flex-flow: column wrap;
-  max-height: 20rem;
+  max-height: 18rem;
   padding-left: 0;
   margin-top: 0;
 }
@@ -322,7 +322,8 @@
   flex-shrink: 0;
   margin-right: 1rem;
   display: inline-block;
-  max-width: 100%;
+  width: 64px;
+  height: 64px;
   border-style: none;
 }
 

@@ -159,11 +159,9 @@ export default class SearchModal extends React.Component {
 
   searchForSuggestedItems(input) {
     const { products } = this.state;
-    let suggestedItems = _.filter(products, (item) => {
-      return item.simple_name.includes(input)
+    let suggestedItems = _.filter(products, (item) => item.simple_name.includes(input)
       || item.description.toLowerCase().includes(input)
-      || item.category.includes(input);
-    });
+      || item.category.includes(input));
     suggestedItems = suggestedItems.slice(0, 6);
     this.setState({
       suggestedItems,
