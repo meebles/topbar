@@ -17,6 +17,11 @@ import dictionary from './assets/dictionary';
 import HeaderLinks from './components/HeaderLinks';
 import NavBar from './components/NavBar';
 
+const url = 'http://teammeatballs-searchbar.us-east-2.elasticbeanstalk.com/';
+
+// URL FOR WORKING LOCALLY
+// const url = 'localhost:3025';
+
 const wordTree = new PrefixTree(...dictionary);
 
 export default class SearchModal extends React.Component {
@@ -68,7 +73,9 @@ export default class SearchModal extends React.Component {
   }
 
   getAllProducts() {
-    Axios.get('/products')
+    Axios.get('/products', {
+      baseURL: url,
+    })
       .then((data) => {
         this.setState({
           products: data.data,
@@ -80,7 +87,9 @@ export default class SearchModal extends React.Component {
   }
 
   getHistory() {
-    Axios.get('/history')
+    Axios.get('/history', {
+      baseURL: url,
+    })
       .then((data) => {
         this.setState({
           history: data.data,
@@ -127,6 +136,8 @@ export default class SearchModal extends React.Component {
     Axios
       .post('/history', {
         searchItem,
+      }, {
+        baseURL: url,
       })
       .then((data) => {
         const { history } = this.state;
@@ -144,7 +155,9 @@ export default class SearchModal extends React.Component {
   }
 
   clearHistory() {
-    Axios.delete('/history')
+    Axios.delete('/history', {
+      baseURL: url,
+    })
       .then((data) => {
         if (data.data.affectedRows > 0) {
           this.setState({
