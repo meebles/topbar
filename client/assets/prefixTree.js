@@ -1,14 +1,15 @@
-//  === AUTHOR: Gabe Anderson (FEC Teammate) ===  //
-
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-prototype-builtins */
 /* eslint-disable no-else-return */
 /* eslint-disable no-restricted-syntax */
+/* eslint-disable no-prototype-builtins */
+
+//  === AUTHOR: Gabe Anderson (FEC Teammate) ===  //
+
 export default class PrefixTree {
-  constructor() {
+  constructor(...args) {
     this.complete = false;
     this.children = {};
-    for (const string of arguments) {
+    for (const string of args) {
       this.add(string);
     }
   }
@@ -90,7 +91,8 @@ export default class PrefixTree {
   }
 
   getCompleteRemaindersFrom(start = '', limit = 5) {
-    const branch = this.get(start, true);
+    const lowered = start.toLowerCase();
+    const branch = this.get(lowered, true);
     return branch === null ? [] : branch.getCompleteChildren('', limit)[0];
   }
 }

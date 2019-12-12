@@ -228,6 +228,7 @@
   display: flex;
   position: relative;
   margin-right: 1.5rem;
+  margin-left: auto;
   top: 50%;
   left: 1rem;
   width: 1.5rem;

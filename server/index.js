@@ -14,7 +14,7 @@ app.get('/products', (req, res) => {
   model
     .getAllProducts()
     .then((data) => {
-      res.send(data);
+      res.send(data); // names currently not having correct characters
     })
     .catch((err) => {
       res.send(err);
@@ -67,7 +67,7 @@ app.get('/sources/fonts/NotoSans-Regular.tff', (req, res) => {
 });
 
 app.get('/sources/fonts/NotoSans-Bold.tff', (req, res) => {
-  res.sendFile(path.join(__dirname, '../dist', '/fonts', 'NotoSans-Bold.tff'));
+  res.sendFile(path.join(__dirname, '../dist/fonts/NotoSans-Bold.tff'));
 });
 
 app.listen(process.env.PORT, (err) => {

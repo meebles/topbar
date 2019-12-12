@@ -20,7 +20,7 @@ import NavBar from './components/NavBar';
 const url = 'http://teammeatballs-searchbar.us-east-2.elasticbeanstalk.com/';
 
 // URL FOR WORKING LOCALLY
-// const url = 'localhost:3025';
+// const url = 'http://localhost:3025';
 
 const wordTree = new PrefixTree(...dictionary);
 
@@ -63,13 +63,15 @@ export default class SearchModal extends React.Component {
   }
 
   onTyping(event) {
-    const autocompletes = wordTree.getCompleteRemaindersFrom(event.target.value);
+    const input = event.target.value;
+
+    const autocompletes = wordTree.getCompleteRemaindersFrom(input);
     autocompletes.sort();
     this.setState({
-      input: event.target.value,
+      input,
       autoFillOptions: autocompletes,
     });
-    this.searchForSuggestedItems(event.target.value);
+    this.searchForSuggestedItems(input);
   }
 
   getAllProducts() {
@@ -170,7 +172,8 @@ export default class SearchModal extends React.Component {
       });
   }
 
-  searchForSuggestedItems(input) {
+  searchForSuggestedItems(rawInput) {
+    const input = rawInput.toLowerCase();
     const { products } = this.state;
     let suggestedItems = _.filter(products, (item) => item.simple_name.includes(input)
       || item.description.toLowerCase().includes(input)
@@ -181,10 +184,18 @@ export default class SearchModal extends React.Component {
     });
   }
 
-  selectSearchedItem(selectedItemId) {
+  selectSearchedItem(productId) {
+    // eslint-disable-next-line no-undef
+    window.dispatchEvent(new CustomEvent('productChanged', {
+      bubbles: true,
+      detail: {
+        productId,
+      },
+    }));
+
     this.setState({
       // eslint-disable-next-line react/no-unused-state
-      currentItem: selectedItemId,
+      currentItem: productId,
       isSelected: false,
       showModal: false,
       input: '',

@@ -5,7 +5,7 @@ const AutoFillList = ({ autoFillOptions, currentInput }) => (
   <ol className="t_name-link-list t_autofill-list">
     {autoFillOptions.map((autofill) => (
       <li key={autofill} className="t_name-link">
-        {currentInput}
+        {currentInput.toLowerCase()}
         <span className="t_autofill-suggestion">{autofill}</span>
       </li>
     ))}
