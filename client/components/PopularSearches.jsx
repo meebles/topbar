@@ -8,7 +8,7 @@ const PopularSearches = ({ popularSearches, isFirstChild }) => {
     <div className="t_popular-searches-container" style={{ borderLeft: borderStatus }}>
       <div className="t_search-title">Popular searches</div>
       <ul className="t_name-link-list">
-        {popularSearches.map((item) => <div className="t_name-link" key={item}>{item}</div>)}
+        {popularSearches.map((item) => <div className="t_name-link t_history-item" key={item}>{item}</div>)}
       </ul>
     </div>
   );

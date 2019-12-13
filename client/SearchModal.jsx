@@ -12,6 +12,12 @@ import PopularSearches from './components/PopularSearches';
 import CategoryLinks from './components/CategoryLinks';
 import AutoFillList from './components/AutoFill';
 import linksList from './assets/linksList';
+import PrefixTree from './assets/prefixTree';
+import dictionary from './assets/dictionary';
+import HeaderLinks from './components/HeaderLinks';
+import NavBar from './components/NavBar';
+
+const wordTree = new PrefixTree(...dictionary);
 
 export default class SearchModal extends React.Component {
   constructor(props) {
@@ -28,7 +34,7 @@ export default class SearchModal extends React.Component {
         searchItem: 'lamps',
       }],
       suggestedItems: [],
-      linksList,
+      autoFillOptions: [],
       popularSearches: ['desk', 'dresser', 'mirror', 'tv stand', 'shelves', 'kallax'],
     };
 
@@ -52,8 +58,11 @@ export default class SearchModal extends React.Component {
   }
 
   onTyping(event) {
+    const autocompletes = wordTree.getCompleteRemaindersFrom(event.target.value);
+    autocompletes.sort();
     this.setState({
       input: event.target.value,
+      autoFillOptions: autocompletes,
     });
     this.searchForSuggestedItems(event.target.value);
   }
@@ -171,27 +180,32 @@ export default class SearchModal extends React.Component {
     });
   }
 
-  //  this is for the search bar placeholder text
-  rotateSuggestedSearches() {
-    const suggested = [];
-  }
-
   render() {
     const {
-      popularSearches, history, input, suggestedItems, showModal, isSelected, linksList,
+      popularSearches, history, input, suggestedItems, showModal, isSelected, autoFillOptions,
     } = this.state;
 
     const selected = isSelected ? 't_selectedInput' : 't_unselectedInput';
 
-    const isFirstChild = history.length === 0 ? true : false;
+    const isFirstChild = history.length === 0;
 
     return showModal ? (
       <div>
-        <div className="t_search-modal-overlay" onClick={this.unselectModal}>
+        {/* <header className="t_header">
+          <HeaderLinks />
+          <NavBar />
+        </header> */}
+        <div
+          className="t_search-modal-overlay"
+          onClick={(e) => {
+            this.unselectModal();
+            e.stopPropagation();
+          }}
+        >
           <div
             className="t_search-box-container"
-            onClick={(e) => {
-              e.stopPropagation();
+            onClick={(event) => {
+              event.stopPropagation();
               this.unselectSearchBar();
             }}
           >
@@ -202,11 +216,17 @@ export default class SearchModal extends React.Component {
                   value={input}
                   autoFocus
                   className={`${selected} t_input-bar`}
-                  onClick={(e) => {
+                  onClick={(event) => {
                     this.selectSearchBar();
-                    e.stopPropagation();
+                    event.stopPropagation();
                   }}
                   onChange={this.onTyping}
+                  onKeyPress={(event) => {
+                    if (event.key === 'Enter') {
+                      this.addHistoryItem(input);
+                      event.preventDefault();
+                    }
+                  }}
                   placeholder={`Search for ${'categories'}`}
                 />
                 {input !== '' ? (
@@ -232,7 +252,7 @@ export default class SearchModal extends React.Component {
                 {history.length > 0 && input === ''
                   ? (<HistoryList history={history} clearHistory={this.clearHistory} />) : null }
                 {input === '' ? <PopularSearches popularSearches={popularSearches} isFirstChild={isFirstChild} /> : null}
-                {input !== '' ? <AutoFillList autoFillOptions={['Did you mean "swedish meatballs"?']} /> : null }
+                {input !== '' ? <AutoFillList autoFillOptions={autoFillOptions} currentInput={input} /> : null }
                 {input !== '' ? <CategoryLinks linksList={linksList} /> : null }
                 {input !== '' && suggestedItems.length > 0
                   ? (
@@ -247,8 +267,14 @@ export default class SearchModal extends React.Component {
         </div>
       </div>
     ) : (
-      <div className="t_search-field">
-        <input type="text" value={input} readOnly className="t_unselectedInput t_input-bar" onClick={this.selectModal} placeholder="Search for categories" />
+      <div>
+        {/* <header className="t_header">
+          <HeaderLinks />
+          <NavBar />
+        </header> */}
+        <div className="t_search-field">
+          <input type="text" value={input} readOnly className="t_unselectedInput t_input-bar" onClick={this.selectModal} placeholder="Search for categories" />
+        </div>
       </div>
     );
   }
