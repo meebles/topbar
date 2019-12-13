@@ -3,22 +3,20 @@
 import React from 'react';
 import T from 'prop-types';
 
-const SuggestedItem = ({ item = { real_name: 'Item not found.' }, selectSearchedItem }) => {
-  return (
-    <li
-      className="t_suggested-item-container t_name-link"
-      onClick={() => {
-        selectSearchedItem(item.id);
-      }}
-    >
-      <img src={item.image_address} alt="" className="t_suggested-item-image" />
-      <div className="t_suggested-item-info">
-        <div className="t_suggested-item-name">{item.real_name}</div>
-        <div className="t_suggested-item-description">{item.description}</div>
-      </div>
-    </li>
-  );
-};
+const SuggestedItem = ({ item = { real_name: 'Item not found.' }, selectSearchedItem }) => (
+  <li
+    className="t_suggested-item-container t_name-link"
+    onClick={() => {
+      selectSearchedItem(item.id);
+    }}
+  >
+    <img src={item.image_address} alt="" className="t_suggested-item-image" />
+    <div className="t_suggested-item-info">
+      <div className="t_suggested-item-name">{item.real_name}</div>
+      <div className="t_suggested-item-description">{item.description}</div>
+    </div>
+  </li>
+);
 
 export default SuggestedItem;
 

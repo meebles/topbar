@@ -5,7 +5,13 @@ import SuggestedItem from './SuggestedItem';
 const SuggestedList = ({ suggestedItems, selectSearchedItem }) => (
   <div className="t_suggestions-list-container">
     <ol className="t_suggested-list">
-      {suggestedItems.map((item) => (<SuggestedItem key={item.id} item={item} selectSearchedItem={selectSearchedItem} />))}
+      {suggestedItems.map((item) => (
+        <SuggestedItem
+          key={item.id}
+          item={item}
+          selectSearchedItem={selectSearchedItem}
+        />
+      ))}
     </ol>
   </div>
 );

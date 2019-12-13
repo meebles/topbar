@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const model = require('../db/model');
+const path = require('path');
 
 const app = express();
 
@@ -53,10 +54,36 @@ app.delete('/history', (req, res) => {
     });
 });
 
-app.listen(3025, (err) => {
+app.get('/sources/bundle', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist', 'bundle.js'));
+});
+
+app.get('/sources/styles', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist', 'stylesheet.css'));
+});
+
+app.get('/sources/fonts/NotoSans-Regular.tff', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist', '/fonts', 'NotoSans-Regular.tff'));
+});
+
+app.get('/sources/fonts/NotoSans-Bold.tff', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist', '/fonts', 'NotoSans-Bold.tff'));
+});
+
+app.listen(process.env.PORT, (err) => {
   if (err) {
     console.log(err);
   } else {
-    console.log('Listening on port 3025...');
+    console.log('Listening on server port...');
   }
 });
+
+//  FOR RUNNING LOCALLY
+
+// app.listen(3025, (err) => {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log('Listening on port 3025...');
+//   }
+// });

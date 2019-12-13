@@ -17,6 +17,11 @@ import dictionary from './assets/dictionary';
 import HeaderLinks from './components/HeaderLinks';
 import NavBar from './components/NavBar';
 
+const url = 'http://teammeatballs-searchbar.us-east-2.elasticbeanstalk.com/';
+
+// URL FOR WORKING LOCALLY
+// const url = 'localhost:3025';
+
 const wordTree = new PrefixTree(...dictionary);
 
 export default class SearchModal extends React.Component {
@@ -68,7 +73,9 @@ export default class SearchModal extends React.Component {
   }
 
   getAllProducts() {
-    Axios.get('/products')
+    Axios.get('/products', {
+      baseURL: url,
+    })
       .then((data) => {
         this.setState({
           products: data.data,
@@ -80,7 +87,9 @@ export default class SearchModal extends React.Component {
   }
 
   getHistory() {
-    Axios.get('/history')
+    Axios.get('/history', {
+      baseURL: url,
+    })
       .then((data) => {
         this.setState({
           history: data.data,
@@ -127,6 +136,8 @@ export default class SearchModal extends React.Component {
     Axios
       .post('/history', {
         searchItem,
+      }, {
+        baseURL: url,
       })
       .then((data) => {
         const { history } = this.state;
@@ -144,7 +155,9 @@ export default class SearchModal extends React.Component {
   }
 
   clearHistory() {
-    Axios.delete('/history')
+    Axios.delete('/history', {
+      baseURL: url,
+    })
       .then((data) => {
         if (data.data.affectedRows > 0) {
           this.setState({
@@ -159,11 +172,9 @@ export default class SearchModal extends React.Component {
 
   searchForSuggestedItems(input) {
     const { products } = this.state;
-    let suggestedItems = _.filter(products, (item) => {
-      return item.simple_name.includes(input)
+    let suggestedItems = _.filter(products, (item) => item.simple_name.includes(input)
       || item.description.toLowerCase().includes(input)
-      || item.category.includes(input);
-    });
+      || item.category.includes(input));
     suggestedItems = suggestedItems.slice(0, 6);
     this.setState({
       suggestedItems,
@@ -190,18 +201,19 @@ export default class SearchModal extends React.Component {
     const isFirstChild = history.length === 0;
 
     return showModal ? (
-      <div>
-        {/* <header className="t_header">
+      <div className="t_all-wrapper">
+        <header className="t_header">
           <HeaderLinks />
           <NavBar />
-        </header> */}
+        </header>
         <div
           className="t_search-modal-overlay"
           onClick={(e) => {
             this.unselectModal();
             e.stopPropagation();
           }}
-        >
+        />
+        <div className="t_search-field-wrapper t_search-field-active">
           <div
             className="t_search-box-container"
             onClick={(event) => {
@@ -267,13 +279,15 @@ export default class SearchModal extends React.Component {
         </div>
       </div>
     ) : (
-      <div>
-        {/* <header className="t_header">
+      <div className="t_all-wrapper">
+        <header className="t_header">
           <HeaderLinks />
           <NavBar />
-        </header> */}
-        <div className="t_search-field">
-          <input type="text" value={input} readOnly className="t_unselectedInput t_input-bar" onClick={this.selectModal} placeholder="Search for categories" />
+        </header>
+        <div className="t_search-field-wrapper">
+          <div className="t_search-field">
+            <input type="text" value={input} readOnly className="t_unselectedInput t_input-bar" onClick={this.selectModal} placeholder="Search for categories" />
+          </div>
         </div>
       </div>
     );
