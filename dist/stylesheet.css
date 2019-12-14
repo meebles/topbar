@@ -1,20 +1,10 @@
-@font-face {
-  font-family: NotoSans-Regular;
-  src: url('./fonts/NotoSans-Regular.ttf');
-}
-
-@font-face {
-  font-family: NotoSans-Bold;
-  src: url('./fonts/NotoSans-Bold.ttf');
-}
-
 #t_body {
   margin: 0;
 }
 
 #t_topbar-root {
   line-height: 1.6rem;
-  font-family: NotoSans-Regular;
+  font-family: 'Noto Sans';
   font-weight: 400;
   color: #111;
   font-size: 16px;
@@ -110,7 +100,7 @@
 }
 
 .t_unselectedInput {
-  background-color: #eee;
+  background-color: #dfdfdf;
 }
 
 .t_search-buttons-wrapper {
@@ -220,7 +210,7 @@
 }
 
 .t_name-link:hover {
-  background-color: #eee;
+  background-color: #dfdfdf;
   cursor: pointer;
 }
 
@@ -281,7 +271,7 @@
 }
 
 .t_autofill-suggestion {
-  font-family: NotoSans-Bold;
+  font-weight: 700;
 }
 
 .t_suggestions-list-container {
@@ -309,7 +299,7 @@
 
 .t_suggested-item-container:hover {
   background-color: #fff;
-  filter: brightness(92%);
+  filter: brightness(88%);
 }
 
 .t_suggested-item-container::after{
@@ -336,7 +326,6 @@
 }
 
 .t_suggested-item-name {
-  font-family: NotoSans-Bold;
   font-weight: 700;
 }
 
@@ -383,7 +372,7 @@
   margin: 0;
   display: flex;
   justify-content: flex-start;
-  background-color: #eee;
+  background-color: #dfdfdf;
   width: 100%;
 }
 
@@ -485,7 +474,7 @@
 
 .t_nav-links-list li {
   border-bottom: none;
-  font-family: NotoSans-Bold;
+  font-weight: 700;
   margin: 0;
   margin-right: .5rem;
   padding: .3rem;
@@ -570,4 +559,20 @@ li.t_nav-link-with-arrow {
 .t_mini-link:active:enabled.t_svg-icon-fill {
   transform: scale(.8333);
   background-color: #ccc;
+}
+
+.t_cart-flag {
+  z-index: 105;
+  transform: translate(.7rem, -.5rem);
+  background: #ffdb00;
+  padding: 0 .295rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: .75rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 5rem;
+  overflow: hidden;
+  line-height: 1.334;
+  position: absolute;
 }

@@ -4,6 +4,8 @@ CREATE DATABASE fec_searchbar;
 
 USE fec_searchbar;
 
+SET character_set_client=utf8, character_set_connection=utf8, character_set_database=utf8, character_set_results=utf8, character_set_server=utf8;
+
 CREATE TABLE history (
   id INT AUTO_INCREMENT PRIMARY KEY,
   searchItem TEXT
@@ -64,7 +66,7 @@ INSERT INTO products (id, real_name, simple_name, category, description, image_a
 INSERT INTO products (id, real_name, simple_name, category, description, image_address) VALUES (37, 'TUFFING'             , 'tuffing'             , 'bed'     , 'Bunk bed frame'                      , 'https://team-meat-searchbar-images.s3.us-east-2.amazonaws.com/037.png');
 INSERT INTO products (id, real_name, simple_name, category, description, image_address) VALUES (38, 'NORDDAL'             , 'norddal'             , 'bed'     , 'Bunk bed frame'                      , 'https://team-meat-searchbar-images.s3.us-east-2.amazonaws.com/038.png');
 INSERT INTO products (id, real_name, simple_name, category, description, image_address) VALUES (39, 'MYDAL'               , 'mydal'               , 'bed'     , 'Bunk bed'                            , 'https://team-meat-searchbar-images.s3.us-east-2.amazonaws.com/039.png');
-INSERT INTO products (id, real_name, simple_name, category, description, image_address) VALUES (40, 'ALLEMANSRÄTTEN'      , 'allemansratten'      , 'bed'     , 'Meatballs, frozen, 84% meat content' , 'https://team-meat-searchbar-images.s3.us-east-2.amazonaws.com/040.png');
+INSERT INTO products (id, real_name, simple_name, category, description, image_address) VALUES (40, 'ALLEMANSRÄTTEN'      , 'allemansratten'      , 'bed'     , 'Vegetable balls, frozen, 100% vegan' , 'https://team-meat-searchbar-images.s3.us-east-2.amazonaws.com/040.png');
 
 INSERT INTO products (id, real_name, simple_name, category, description, image_address) VALUES (41, 'HAMNSKÄR'            , 'hamnskar'            , 'bathroom', 'Bronze faucet'                       , 'https://team-meat-searchbar-images.s3.us-east-2.amazonaws.com/041.png');
 INSERT INTO products (id, real_name, simple_name, category, description, image_address) VALUES (42, 'LILLSVAN'            , 'lillsvan'            , 'bathroom', 'Chrome plated faucet'                , 'https://team-meat-searchbar-images.s3.us-east-2.amazonaws.com/042.png');
@@ -108,7 +110,7 @@ INSERT INTO products (id, real_name, simple_name, category, description, image_a
 INSERT INTO products (id, real_name, simple_name, category, description, image_address) VALUES (79, 'GUBBRÖRA'            , 'gubrora'             , 'kitchen' , 'Rubber spatula'                      , 'https://team-meat-searchbar-images.s3.us-east-2.amazonaws.com/079.png');
 INSERT INTO products (id, real_name, simple_name, category, description, image_address) VALUES (80, 'JÄMFÖRLIG'           , 'jamforlig'           , 'kitchen' , 'Handheld whisk'                      , 'https://team-meat-searchbar-images.s3.us-east-2.amazonaws.com/080.png');
 
-INSERT INTO products (id, real_name, simple_name, category, description, image_address) VALUES (81, 'KÖTTBULLAR'          , 'kottbullar'          , 'outdoor' , 'Meatballs, frozen'                   , 'https://team-meat-searchbar-images.s3.us-east-2.amazonaws.com/081.png');
+INSERT INTO products (id, real_name, simple_name, category, description, image_address) VALUES (81, 'KÖTTBULLAR'          , 'kottbullar'          , 'outdoor' , 'Meatballs, frozen, 84% meat content' , 'https://team-meat-searchbar-images.s3.us-east-2.amazonaws.com/081.png');
 INSERT INTO products (id, real_name, simple_name, category, description, image_address) VALUES (82, 'FANBYN'              , 'fanbyn'              , 'outdoor' , 'Bar table and 4 bar stools'          , 'https://team-meat-searchbar-images.s3.us-east-2.amazonaws.com/082.png');
 INSERT INTO products (id, real_name, simple_name, category, description, image_address) VALUES (83, 'FANBYN'              , 'fanbyn'              , 'outdoor' , 'Bar stool with backrest'             , 'https://team-meat-searchbar-images.s3.us-east-2.amazonaws.com/083.png');
 INSERT INTO products (id, real_name, simple_name, category, description, image_address) VALUES (84, 'FRÖSÖN / DUVHOLMEN'  , 'froson / duvholmen'  , 'outdoor' , 'Seat pad, outdoor'                   , 'https://team-meat-searchbar-images.s3.us-east-2.amazonaws.com/084.png');

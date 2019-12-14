@@ -1,6 +1,7 @@
 import React from 'react';
+import T from 'prop-types';
 
-const NavBar = () => (
+const NavBar = ({ cartCount }) => (
   <div className="t_nav-wrapper">
     <div className="t_nav-container">
       <div className="t_logo-container">
@@ -46,11 +47,16 @@ const NavBar = () => (
               <path d="M16.677 10l-1.245-3.114L12.646 5h-1.292L8.568 6.886 7.323 10H2l2.544 7.633A2 2 0 0 0 6.441 19h11.117a2 2 0 0 0 1.898-1.368L22 10zm-6-3h2.646l1.2 3H9.477zm6.881 10H6.441l-1.666-5h14.45z" />
             </svg>
             <div className="t_svg-icon-fill" />
+            {cartCount !== 0 ? <span className="t_cart-flag">{cartCount}</span> : null}
           </li>
         </ul>
       </div>
     </div>
   </div>
 );
+
+NavBar.propTypes = {
+  cartCount: T.number.isRequired,
+};
 
 export default NavBar;

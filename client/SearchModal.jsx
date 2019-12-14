@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unused-state */
+/* eslint-disable no-undef */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable jsx-a11y/no-autofocus */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -28,8 +30,8 @@ export default class SearchModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // eslint-disable-next-line react/no-unused-state
       currentItem: 1,
+      cartCount: 0,
       showModal: false,
       isSelected: false,
       input: '',
@@ -55,11 +57,17 @@ export default class SearchModal extends React.Component {
     this.clearInput = this.clearInput.bind(this);
     this.searchForSuggestedItems = this.searchForSuggestedItems.bind(this);
     this.selectSearchedItem = this.selectSearchedItem.bind(this);
+    this.updateCart = this.updateCart.bind(this);
+    this.goToMeatballs = this.goToMeatballs.bind(this);
   }
 
   componentDidMount() {
     this.getAllProducts();
     this.getHistory();
+
+    window.addEventListener('cartUpdated', (event) => {
+      this.updateCart(event.detail.cartCount);
+    });
   }
 
   onTyping(event) {
@@ -185,7 +193,6 @@ export default class SearchModal extends React.Component {
   }
 
   selectSearchedItem(productId) {
-    // eslint-disable-next-line no-undef
     window.dispatchEvent(new CustomEvent('productChanged', {
       bubbles: true,
       detail: {
@@ -194,7 +201,30 @@ export default class SearchModal extends React.Component {
     }));
 
     this.setState({
-      // eslint-disable-next-line react/no-unused-state
+      currentItem: productId,
+      isSelected: false,
+      showModal: false,
+      input: '',
+    });
+  }
+
+  updateCart(cartCount) {
+    this.setState({
+      cartCount,
+    });
+  }
+
+  goToMeatballs() {
+    const productId = 40;
+
+    window.dispatchEvent(new CustomEvent('productChanged', {
+      bubbles: true,
+      detail: {
+        productId,
+      },
+    }));
+
+    this.setState({
       currentItem: productId,
       isSelected: false,
       showModal: false,
@@ -204,7 +234,8 @@ export default class SearchModal extends React.Component {
 
   render() {
     const {
-      popularSearches, history, input, suggestedItems, showModal, isSelected, autoFillOptions,
+      popularSearches, history, input, suggestedItems,
+      showModal, isSelected, autoFillOptions, cartCount,
     } = this.state;
 
     const selected = isSelected ? 't_selectedInput' : 't_unselectedInput';
@@ -215,7 +246,7 @@ export default class SearchModal extends React.Component {
       <div className="t_all-wrapper">
         <header className="t_header">
           <HeaderLinks />
-          <NavBar />
+          <NavBar cartCount={cartCount} />
         </header>
         <div
           className="t_search-modal-overlay"
@@ -272,10 +303,10 @@ export default class SearchModal extends React.Component {
             </form>
             <div className="t_under-search-container">
               <div className="t_search-bar-area">
-                {history.length > 0 && input === ''
+                {input === '' && history.length > 0
                   ? (<HistoryList history={history} clearHistory={this.clearHistory} />) : null }
                 {input === '' ? <PopularSearches popularSearches={popularSearches} isFirstChild={isFirstChild} /> : null}
-                {input !== '' ? <AutoFillList autoFillOptions={autoFillOptions} currentInput={input} /> : null }
+                {input !== '' ? <AutoFillList autoFillOptions={autoFillOptions} currentInput={input} goToMeatballs={this.goToMeatballs} /> : null }
                 {input !== '' ? <CategoryLinks linksList={linksList} /> : null }
                 {input !== '' && suggestedItems.length > 0
                   ? (
@@ -293,11 +324,18 @@ export default class SearchModal extends React.Component {
       <div className="t_all-wrapper">
         <header className="t_header">
           <HeaderLinks />
-          <NavBar />
+          <NavBar cartCount={cartCount} />
         </header>
         <div className="t_search-field-wrapper">
           <div className="t_search-field">
-            <input type="text" value={input} readOnly className="t_unselectedInput t_input-bar" onClick={this.selectModal} placeholder="Search for categories" />
+            <input
+              type="text"
+              value={input}
+              className="t_unselectedInput t_input-bar"
+              onClick={this.selectModal}
+              placeholder="Search for categories"
+              readOnly
+            />
           </div>
         </div>
       </div>
