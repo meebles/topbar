@@ -12,7 +12,7 @@ import SuggestedList from './components/SuggestedList';
 import HistoryList from './components/HistoryList';
 import PopularSearches from './components/PopularSearches';
 import CategoryLinks from './components/CategoryLinks';
-import AutoFillList from './components/AutoFill';
+import AutoFillList from './components/AutoFillList';
 import linksList from './assets/linksList';
 import PrefixTree from './assets/prefixTree';
 import dictionary from './assets/dictionary';
@@ -255,66 +255,68 @@ export default class SearchModal extends React.Component {
             e.stopPropagation();
           }}
         />
-        <div className="t_search-field-wrapper t_search-field-active">
-          <div
-            className="t_search-box-container"
-            onClick={(event) => {
-              event.stopPropagation();
-              this.unselectSearchBar();
-            }}
-          >
-            <form className="t_search-form">
-              <div className="t_search-field">
-                <input
-                  type="text"
-                  value={input}
-                  autoFocus
-                  className={`${selected} t_input-bar`}
-                  onClick={(event) => {
-                    this.selectSearchBar();
-                    event.stopPropagation();
-                  }}
-                  onChange={this.onTyping}
-                  onKeyPress={(event) => {
-                    if (event.key === 'Enter') {
-                      this.addHistoryItem(input);
-                      event.preventDefault();
-                    }
-                  }}
-                  placeholder={`Search for ${'categories'}`}
-                />
-                {input !== '' ? (
-                  <span className="t_search-buttons-wrapper">
-                    <button
-                      type="button"
-                      className="t_search-button t_search-button-reset"
-                      onClick={this.clearInput}
-                    />
-                    <button
-                      type="button"
-                      className="t_search-button t_search-button-search"
-                      onClick={() => {
+        <div className="t_search-field-wrapper">
+          <div className="t_search-field-active">
+            <div
+              className="t_search-box-container"
+              onClick={(event) => {
+                event.stopPropagation();
+                this.unselectSearchBar();
+              }}
+            >
+              <form className="t_search-form">
+                <div className="t_search-field">
+                  <input
+                    type="text"
+                    value={input}
+                    autoFocus
+                    className={`${selected} t_input-bar`}
+                    onClick={(event) => {
+                      this.selectSearchBar();
+                      event.stopPropagation();
+                    }}
+                    onChange={this.onTyping}
+                    onKeyPress={(event) => {
+                      if (event.key === 'Enter') {
                         this.addHistoryItem(input);
-                      }}
-                    />
-                  </span>
-                ) : null}
-              </div>
-            </form>
-            <div className="t_under-search-container">
-              <div className="t_search-bar-area">
-                {input === '' && history.length > 0
-                  ? (<HistoryList history={history} clearHistory={this.clearHistory} />) : null }
-                {input === '' ? <PopularSearches popularSearches={popularSearches} isFirstChild={isFirstChild} /> : null}
-                {input !== '' ? <AutoFillList autoFillOptions={autoFillOptions} currentInput={input} goToMeatballs={this.goToMeatballs} /> : null }
-                {input !== '' ? <CategoryLinks linksList={linksList} /> : null }
-                {input !== '' && suggestedItems.length > 0
-                  ? (
-                    <SuggestedList
-                      suggestedItems={suggestedItems}
-                      selectSearchedItem={this.selectSearchedItem}
-                    />
-                  ) : null }
+                        event.preventDefault();
+                      }
+                    }}
+                    placeholder={`Search for ${'categories'}`}
+                  />
+                  {input !== '' ? (
+                    <span className="t_search-buttons-wrapper">
+                      <button
+                        type="button"
+                        className="t_search-button t_search-button-reset"
+                        onClick={this.clearInput}
+                      />
+                      <button
+                        type="button"
+                        className="t_search-button t_search-button-search"
+                        onClick={() => {
+                          this.addHistoryItem(input);
+                        }}
+                      />
+                    </span>
+                  ) : null}
+                </div>
+              </form>
+              <div className="t_under-search-container">
+                <div className="t_search-bar-area">
+                  {input === '' && history.length > 0
+                    ? (<HistoryList history={history} clearHistory={this.clearHistory} />) : null }
+                  {input === '' ? <PopularSearches popularSearches={popularSearches} isFirstChild={isFirstChild} /> : null}
+                  {input !== '' ? <AutoFillList autoFillOptions={autoFillOptions} currentInput={input} goToMeatballs={this.goToMeatballs} /> : null }
+                  {input !== '' ? <CategoryLinks linksList={linksList} /> : null }
+                  {input !== '' && suggestedItems.length > 0
+                    ? (
+                      <SuggestedList
+                        suggestedItems={suggestedItems}
+                        selectSearchedItem={this.selectSearchedItem}
+                      />
+                    ) : null }
+                </div>
               </div>
             </div>
           </div>
