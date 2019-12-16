@@ -1,8 +1,16 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import T from 'prop-types';
 
-const NavBar = ({ cartCount }) => (
-  <div className="t_nav-wrapper">
+const NavBar = ({ cartCount, unselectSearchBar, unselectModal }) => (
+  <div
+    className="t_nav-wrapper"
+    onClick={() => {
+      unselectModal();
+      unselectSearchBar();
+    }}
+  >
     <div className="t_nav-container">
       <div className="t_logo-container">
         <img src="https://team-meat-searchbar-images.s3.us-east-2.amazonaws.com/logo.png" alt="" />
@@ -57,6 +65,8 @@ const NavBar = ({ cartCount }) => (
 
 NavBar.propTypes = {
   cartCount: T.number.isRequired,
+  unselectModal: T.func.isRequired,
+  unselectSearchBar: T.func.isRequired,
 };
 
 export default NavBar;

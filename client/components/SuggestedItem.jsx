@@ -7,7 +7,7 @@ const SuggestedItem = ({ item = { real_name: 'Item not found.' }, selectSearched
   <li
     className="t_suggested-item-container t_name-link"
     onClick={() => {
-      selectSearchedItem(item.id);
+      selectSearchedItem(item);
     }}
   >
     <img src={item.image_address} alt="" className="t_suggested-item-image" />

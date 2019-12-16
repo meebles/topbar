@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unused-state */
 /* eslint-disable no-undef */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable jsx-a11y/no-autofocus */
@@ -18,11 +17,13 @@ import PrefixTree from './assets/prefixTree';
 import dictionary from './assets/dictionary';
 import HeaderLinks from './components/HeaderLinks';
 import NavBar from './components/NavBar';
+import FadingPlaceholder from './components/FadingPlaceholder';
+import Breadcrumb from './components/Breadcrumb';
 
-const url = 'http://teammeatballs-searchbar.us-east-2.elasticbeanstalk.com/';
+// const url = 'http://teammeatballs-searchbar.us-east-2.elasticbeanstalk.com/';
 
 // URL FOR WORKING LOCALLY
-// const url = 'http://localhost:3025';
+const url = 'http://localhost:3025';
 
 const wordTree = new PrefixTree(...dictionary);
 
@@ -30,7 +31,14 @@ export default class SearchModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentItem: 1,
+      currentItem: {
+        id: 3,
+        real_name: 'HAVSTEN',
+        simple_name: 'havsten',
+        description: 'Chair, indoor/outdoor',
+        category: 'chair',
+        image_address: 'https://team-meat-searchbar-images.s3.us-east-2.amazonaws.com/003.png',
+      },
       cartCount: 0,
       showModal: false,
       isSelected: false,
@@ -42,6 +50,7 @@ export default class SearchModal extends React.Component {
       }],
       suggestedItems: [],
       autoFillOptions: [],
+      currentPlaceholder: 0,
       popularSearches: ['desk', 'dresser', 'mirror', 'tv stand', 'shelves', 'kallax'],
     };
 
@@ -58,12 +67,14 @@ export default class SearchModal extends React.Component {
     this.searchForSuggestedItems = this.searchForSuggestedItems.bind(this);
     this.selectSearchedItem = this.selectSearchedItem.bind(this);
     this.updateCart = this.updateCart.bind(this);
+    this.rotatePlaceholder = this.rotatePlaceholder.bind(this);
     this.goToMeatballs = this.goToMeatballs.bind(this);
   }
 
   componentDidMount() {
     this.getAllProducts();
     this.getHistory();
+    this.rotatePlaceholder();
 
     window.addEventListener('cartUpdated', (event) => {
       this.updateCart(event.detail.cartCount);
@@ -192,16 +203,18 @@ export default class SearchModal extends React.Component {
     });
   }
 
-  selectSearchedItem(productId) {
+  selectSearchedItem(product) {
     window.dispatchEvent(new CustomEvent('productChanged', {
       bubbles: true,
       detail: {
-        productId,
+        productId: product.id,
       },
     }));
 
+    console.log(product);
+
     this.setState({
-      currentItem: productId,
+      currentItem: product,
       isSelected: false,
       showModal: false,
       input: '',
@@ -212,6 +225,33 @@ export default class SearchModal extends React.Component {
     this.setState({
       cartCount,
     });
+  }
+
+  rotatePlaceholder() {
+    let { currentPlaceholder } = this.state;
+
+    switch (currentPlaceholder) {
+      case 1:
+        currentPlaceholder += 1;
+        break;
+      case 2:
+        currentPlaceholder += 1;
+        break;
+      case 3:
+        currentPlaceholder = 1;
+        break;
+      default:
+        currentPlaceholder = 1;
+        break;
+    }
+
+    this.setState({
+      currentPlaceholder,
+    });
+
+    setTimeout(() => {
+      this.rotatePlaceholder();
+    }, 3000);
   }
 
   goToMeatballs() {
@@ -234,19 +274,23 @@ export default class SearchModal extends React.Component {
 
   render() {
     const {
-      popularSearches, history, input, suggestedItems,
-      showModal, isSelected, autoFillOptions, cartCount,
+      popularSearches, history, input, suggestedItems, currentPlaceholder,
+      showModal, isSelected, autoFillOptions, cartCount, currentItem,
     } = this.state;
 
     const selected = isSelected ? 't_selectedInput' : 't_unselectedInput';
-
     const isFirstChild = history.length === 0;
+    const inputEmpty = input === '';
 
     return showModal ? (
       <div className="t_all-wrapper">
         <header className="t_header">
           <HeaderLinks />
-          <NavBar cartCount={cartCount} />
+          <NavBar
+            cartCount={cartCount}
+            unselectSearchBar={this.unselectSearchBar}
+            unselectModal={this.unselectModal}
+          />
         </header>
         <div
           className="t_search-modal-overlay"
@@ -282,8 +326,8 @@ export default class SearchModal extends React.Component {
                         event.preventDefault();
                       }
                     }}
-                    placeholder={`Search for ${'categories'}`}
                   />
+                  {inputEmpty ? <FadingPlaceholder currentActive={currentPlaceholder} /> : null}
                   {input !== '' ? (
                     <span className="t_search-buttons-wrapper">
                       <button
@@ -304,12 +348,25 @@ export default class SearchModal extends React.Component {
               </form>
               <div className="t_under-search-container">
                 <div className="t_search-bar-area">
-                  {input === '' && history.length > 0
+                  {inputEmpty && history.length > 0
                     ? (<HistoryList history={history} clearHistory={this.clearHistory} />) : null }
-                  {input === '' ? <PopularSearches popularSearches={popularSearches} isFirstChild={isFirstChild} /> : null}
-                  {input !== '' ? <AutoFillList autoFillOptions={autoFillOptions} currentInput={input} goToMeatballs={this.goToMeatballs} /> : null }
-                  {input !== '' ? <CategoryLinks linksList={linksList} /> : null }
-                  {input !== '' && suggestedItems.length > 0
+                  {inputEmpty
+                    ? (
+                      <PopularSearches
+                        popularSearches={popularSearches}
+                        isFirstChild={isFirstChild}
+                      />
+                    ) : null}
+                  {!inputEmpty
+                    ? (
+                      <AutoFillList
+                        autoFillOptions={autoFillOptions}
+                        currentInput={input}
+                        goToMeatballs={this.goToMeatballs}
+                      />
+                    ) : null }
+                  {!inputEmpty ? <CategoryLinks linksList={linksList} /> : null }
+                  {!inputEmpty && suggestedItems.length > 0
                     ? (
                       <SuggestedList
                         suggestedItems={suggestedItems}
@@ -321,25 +378,31 @@ export default class SearchModal extends React.Component {
             </div>
           </div>
         </div>
+        <Breadcrumb currentItem={currentItem} />
       </div>
     ) : (
       <div className="t_all-wrapper">
         <header className="t_header">
           <HeaderLinks />
-          <NavBar cartCount={cartCount} />
+          <NavBar
+            cartCount={cartCount}
+            unselectSearchBar={this.unselectSearchBar}
+            unselectModal={this.unselectModal}
+          />
         </header>
         <div className="t_search-field-wrapper">
-          <div className="t_search-field">
+          <div className="t_search-field t_search-field-inactive">
             <input
               type="text"
               value={input}
               className="t_unselectedInput t_input-bar"
               onClick={this.selectModal}
-              placeholder="Search for categories"
               readOnly
             />
+            {inputEmpty ? <FadingPlaceholder currentActive={currentPlaceholder} /> : null}
           </div>
         </div>
+        <Breadcrumb currentItem={currentItem} />
       </div>
     );
   }
