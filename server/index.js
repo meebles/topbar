@@ -70,20 +70,20 @@ app.get('/sources/fonts/NotoSans-Bold.tff', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/fonts/NotoSans-Bold.tff'));
 });
 
-// app.listen(process.env.PORT, (err) => {
-//   if (err) {
-//     console.log(err);
-//   } else {
-//     console.log(`Listening on port ${process.env.PORT}...`);
-//   }
-// });
-
-//  FOR RUNNING LOCALLY
-
-app.listen(3025, (err) => {
+app.listen(process.env.PORT, (err) => {
   if (err) {
     console.log(err);
   } else {
-    console.log('Listening on port 3025...');
+    console.log(`Listening on port ${process.env.PORT}...`);
   }
 });
+
+//  FOR RUNNING LOCALLY
+
+// app.listen(3025, (err) => {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log('Listening on port 3025...');
+//   }
+// });

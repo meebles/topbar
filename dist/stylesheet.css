@@ -257,14 +257,14 @@
 .t_history-clear-button {
   display: flex;
   align-items: center;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0rem;
+  padding-left: 2rem;
   font-size: .875rem;
   font-weight: 700;
   cursor: pointer;
   background: none;
   border: 0;
   position: relative;
-  overflow: visible;
   outline: none;
 }
 
@@ -573,7 +573,7 @@ li.t_nav-link-with-arrow {
 
 .t_cart-flag {
   z-index: 105;
-  transform: translate(.7rem, -.5rem);
+  transform: translate(.9rem, -.5rem);
   background: #ffdb00;
   padding: 0 .295rem;
   border-radius: 8px;
@@ -594,7 +594,7 @@ li.t_nav-link-with-arrow {
   transform: translateY(-50%);
   margin: 0;
   padding: 0;
-  z-index: 110;
+  z-index: 10;
 }
 
 .t_placeholder-list {

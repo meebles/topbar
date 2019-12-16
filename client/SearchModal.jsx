@@ -20,10 +20,10 @@ import NavBar from './components/NavBar';
 import FadingPlaceholder from './components/FadingPlaceholder';
 import Breadcrumb from './components/Breadcrumb';
 
-// const url = 'http://teammeatballs-searchbar.us-east-2.elasticbeanstalk.com/';
+const url = 'http://teammeatballs-searchbar.us-east-2.elasticbeanstalk.com/';
 
 // URL FOR WORKING LOCALLY
-const url = 'http://localhost:3025';
+// const url = 'http://localhost:3025';
 
 const wordTree = new PrefixTree(...dictionary);
 
@@ -64,6 +64,7 @@ export default class SearchModal extends React.Component {
     this.searchForSuggestedItems = this.searchForSuggestedItems.bind(this);
     this.selectSearchedItem = this.selectSearchedItem.bind(this);
     this.updateCart = this.updateCart.bind(this);
+    this.findReceivedItem = this.findReceivedItem.bind(this);
     this.rotatePlaceholder = this.rotatePlaceholder.bind(this);
     this.goToMeatballs = this.goToMeatballs.bind(this);
   }
@@ -75,6 +76,10 @@ export default class SearchModal extends React.Component {
 
     window.addEventListener('cartUpdated', (event) => {
       this.updateCart(event.detail.cartCount);
+    });
+
+    window.addEventListener('productChanged', (event) => {
+      this.findReceivedItem(Number(event.detail.productId));
     });
   }
 
@@ -209,7 +214,6 @@ export default class SearchModal extends React.Component {
     }));
 
     this.setState({
-      currentItem: product,
       isSelected: false,
       showModal: false,
       input: '',
@@ -220,6 +224,19 @@ export default class SearchModal extends React.Component {
     this.setState({
       cartCount,
     });
+  }
+
+  findReceivedItem(id) {
+    const { products } = this.state;
+
+    for (let i = 0; i < products.length; i += 1) {
+      if (products[i].id === id) {
+        this.setState({
+          currentItem: products[i],
+        });
+        return;
+      }
+    }
   }
 
   rotatePlaceholder() {
@@ -293,9 +310,9 @@ export default class SearchModal extends React.Component {
         </header>
         <div
           className="t_search-modal-overlay"
-          onClick={(e) => {
+          onClick={(event) => {
+            event.stopPropagation();
             this.unselectModal();
-            e.stopPropagation();
           }}
         />
         <div className="t_search-field-wrapper">
@@ -315,18 +332,23 @@ export default class SearchModal extends React.Component {
                     autoFocus
                     className={`${selected} t_input-bar`}
                     onClick={(event) => {
-                      this.selectSearchBar();
                       event.stopPropagation();
+                      this.selectSearchBar();
                     }}
                     onChange={this.onTyping}
                     onKeyPress={(event) => {
                       if (event.key === 'Enter') {
-                        this.addHistoryItem(input);
                         event.preventDefault();
+                        this.addHistoryItem(input);
                       }
                     }}
                   />
-                  {inputEmpty ? <FadingPlaceholder currentActive={currentPlaceholder} /> : null}
+                  {inputEmpty ? (
+                    <FadingPlaceholder
+                      currentActive={currentPlaceholder}
+                      onClick={this.selectModal}
+                    />
+                  ) : null}
                   {input !== '' ? (
                     <span className="t_search-buttons-wrapper">
                       <button
@@ -398,7 +420,12 @@ export default class SearchModal extends React.Component {
               onClick={this.selectModal}
               readOnly
             />
-            {inputEmpty ? <FadingPlaceholder currentActive={currentPlaceholder} /> : null}
+            {inputEmpty ? (
+              <FadingPlaceholder
+                currentActive={currentPlaceholder}
+                onClick={this.selectModal}
+              />
+            ) : null}
           </div>
         </div>
         <Breadcrumb currentItem={currentItem} />
