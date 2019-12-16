@@ -629,3 +629,55 @@ li.t_nav-link-with-arrow {
   animation: t_fade-in-out 3s ease;
   -webkit-animation: t_fade-in-out 3s ease;
 }
+
+.t_breadcrumb-wrapper {
+  display: flex;
+  margin: auto;
+  margin-top: 1.3rem;
+  justify-content: flex-start;
+  width: 88rem;
+}
+
+.t_breadcrumb-container {
+  display: flex;
+  justify-self: flex-start;
+}
+
+.t_breadcrumb-list {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  font-size: .75rem;
+  margin: 0;
+  margin-left: -1.2rem;
+}
+
+.t_breadcrumb {
+  cursor: pointer;
+}
+
+.t_breadcrumb:hover {
+  text-decoration: underline;
+}
+
+.t_breadcrumb-item::after {
+  content: "/";
+  display: inline;
+  margin: 0 .75rem;
+  font-weight: 700;
+}
+
+.t_breadcrumb:hover::after {
+  text-decoration: none;
+}
+
+.t_breadcrumb-product {
+  color: #666;
+  cursor: default;
+}
+
+.t_last-crumb::after {
+  display: none;
+}

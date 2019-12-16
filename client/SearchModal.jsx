@@ -34,10 +34,7 @@ export default class SearchModal extends React.Component {
       currentItem: {
         id: 3,
         real_name: 'HAVSTEN',
-        simple_name: 'havsten',
-        description: 'Chair, indoor/outdoor',
         category: 'chair',
-        image_address: 'https://team-meat-searchbar-images.s3.us-east-2.amazonaws.com/003.png',
       },
       cartCount: 0,
       showModal: false,
@@ -211,8 +208,6 @@ export default class SearchModal extends React.Component {
       },
     }));
 
-    console.log(product);
-
     this.setState({
       currentItem: product,
       isSelected: false,
@@ -255,17 +250,21 @@ export default class SearchModal extends React.Component {
   }
 
   goToMeatballs() {
-    const productId = 40;
+    const meatballs = {
+      id: 40,
+      real_name: 'ALLEMANSRÄTTEN',
+      category: 'meatballs',
+    };
 
     window.dispatchEvent(new CustomEvent('productChanged', {
       bubbles: true,
       detail: {
-        productId,
+        productId: 40,
       },
     }));
 
     this.setState({
-      currentItem: productId,
+      currentItem: meatballs,
       isSelected: false,
       showModal: false,
       input: '',
