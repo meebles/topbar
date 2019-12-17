@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable jsx-a11y/no-autofocus */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -10,17 +11,19 @@ import SuggestedList from './components/SuggestedList';
 import HistoryList from './components/HistoryList';
 import PopularSearches from './components/PopularSearches';
 import CategoryLinks from './components/CategoryLinks';
-import AutoFillList from './components/AutoFill';
+import AutoFillList from './components/AutoFillList';
 import linksList from './assets/linksList';
 import PrefixTree from './assets/prefixTree';
 import dictionary from './assets/dictionary';
 import HeaderLinks from './components/HeaderLinks';
 import NavBar from './components/NavBar';
+import FadingPlaceholder from './components/FadingPlaceholder';
+import Breadcrumb from './components/Breadcrumb';
 
 const url = 'http://teammeatballs-searchbar.us-east-2.elasticbeanstalk.com/';
 
 // URL FOR WORKING LOCALLY
-// const url = 'localhost:3025';
+// const url = 'http://localhost:3025';
 
 const wordTree = new PrefixTree(...dictionary);
 
@@ -28,8 +31,12 @@ export default class SearchModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // eslint-disable-next-line react/no-unused-state
-      currentItem: 1,
+      currentItem: {
+        id: 3,
+        real_name: 'HAVSTEN',
+        category: 'chair',
+      },
+      cartCount: 0,
       showModal: false,
       isSelected: false,
       input: '',
@@ -40,6 +47,7 @@ export default class SearchModal extends React.Component {
       }],
       suggestedItems: [],
       autoFillOptions: [],
+      currentPlaceholder: 0,
       popularSearches: ['desk', 'dresser', 'mirror', 'tv stand', 'shelves', 'kallax'],
     };
 
@@ -55,21 +63,36 @@ export default class SearchModal extends React.Component {
     this.clearInput = this.clearInput.bind(this);
     this.searchForSuggestedItems = this.searchForSuggestedItems.bind(this);
     this.selectSearchedItem = this.selectSearchedItem.bind(this);
+    this.updateCart = this.updateCart.bind(this);
+    this.findReceivedItem = this.findReceivedItem.bind(this);
+    this.rotatePlaceholder = this.rotatePlaceholder.bind(this);
+    this.goToMeatballs = this.goToMeatballs.bind(this);
   }
 
   componentDidMount() {
     this.getAllProducts();
     this.getHistory();
+    this.rotatePlaceholder();
+
+    window.addEventListener('cartUpdated', (event) => {
+      this.updateCart(event.detail.cartCount);
+    });
+
+    window.addEventListener('productChanged', (event) => {
+      this.findReceivedItem(Number(event.detail.productId));
+    });
   }
 
   onTyping(event) {
-    const autocompletes = wordTree.getCompleteRemaindersFrom(event.target.value);
+    const input = event.target.value;
+
+    const autocompletes = wordTree.getCompleteRemaindersFrom(input);
     autocompletes.sort();
     this.setState({
-      input: event.target.value,
+      input,
       autoFillOptions: autocompletes,
     });
-    this.searchForSuggestedItems(event.target.value);
+    this.searchForSuggestedItems(input);
   }
 
   getAllProducts() {
@@ -170,7 +193,8 @@ export default class SearchModal extends React.Component {
       });
   }
 
-  searchForSuggestedItems(input) {
+  searchForSuggestedItems(rawInput) {
+    const input = rawInput.toLowerCase();
     const { products } = this.state;
     let suggestedItems = _.filter(products, (item) => item.simple_name.includes(input)
       || item.description.toLowerCase().includes(input)
@@ -181,10 +205,83 @@ export default class SearchModal extends React.Component {
     });
   }
 
-  selectSearchedItem(selectedItemId) {
+  selectSearchedItem(product) {
+    window.dispatchEvent(new CustomEvent('productChanged', {
+      bubbles: true,
+      detail: {
+        productId: product.id,
+      },
+    }));
+
     this.setState({
-      // eslint-disable-next-line react/no-unused-state
-      currentItem: selectedItemId,
+      isSelected: false,
+      showModal: false,
+      input: '',
+    });
+  }
+
+  updateCart(cartCount) {
+    this.setState({
+      cartCount,
+    });
+  }
+
+  findReceivedItem(id) {
+    const { products } = this.state;
+
+    for (let i = 0; i < products.length; i += 1) {
+      if (products[i].id === id) {
+        this.setState({
+          currentItem: products[i],
+        });
+        return;
+      }
+    }
+  }
+
+  rotatePlaceholder() {
+    let { currentPlaceholder } = this.state;
+
+    switch (currentPlaceholder) {
+      case 1:
+        currentPlaceholder += 1;
+        break;
+      case 2:
+        currentPlaceholder += 1;
+        break;
+      case 3:
+        currentPlaceholder = 1;
+        break;
+      default:
+        currentPlaceholder = 1;
+        break;
+    }
+
+    this.setState({
+      currentPlaceholder,
+    });
+
+    setTimeout(() => {
+      this.rotatePlaceholder();
+    }, 3000);
+  }
+
+  goToMeatballs() {
+    const meatballs = {
+      id: 40,
+      real_name: 'ALLEMANSRÄTTEN',
+      category: 'meatballs',
+    };
+
+    window.dispatchEvent(new CustomEvent('productChanged', {
+      bubbles: true,
+      detail: {
+        productId: 40,
+      },
+    }));
+
+    this.setState({
+      currentItem: meatballs,
       isSelected: false,
       showModal: false,
       input: '',
@@ -193,102 +290,145 @@ export default class SearchModal extends React.Component {
 
   render() {
     const {
-      popularSearches, history, input, suggestedItems, showModal, isSelected, autoFillOptions,
+      popularSearches, history, input, suggestedItems, currentPlaceholder,
+      showModal, isSelected, autoFillOptions, cartCount, currentItem,
     } = this.state;
 
     const selected = isSelected ? 't_selectedInput' : 't_unselectedInput';
-
     const isFirstChild = history.length === 0;
+    const inputEmpty = input === '';
 
     return showModal ? (
       <div className="t_all-wrapper">
         <header className="t_header">
           <HeaderLinks />
-          <NavBar />
+          <NavBar
+            cartCount={cartCount}
+            unselectSearchBar={this.unselectSearchBar}
+            unselectModal={this.unselectModal}
+          />
         </header>
         <div
           className="t_search-modal-overlay"
-          onClick={(e) => {
+          onClick={(event) => {
+            event.stopPropagation();
             this.unselectModal();
-            e.stopPropagation();
           }}
         />
-        <div className="t_search-field-wrapper t_search-field-active">
-          <div
-            className="t_search-box-container"
-            onClick={(event) => {
-              event.stopPropagation();
-              this.unselectSearchBar();
-            }}
-          >
-            <form className="t_search-form">
-              <div className="t_search-field">
-                <input
-                  type="text"
-                  value={input}
-                  autoFocus
-                  className={`${selected} t_input-bar`}
-                  onClick={(event) => {
-                    this.selectSearchBar();
-                    event.stopPropagation();
-                  }}
-                  onChange={this.onTyping}
-                  onKeyPress={(event) => {
-                    if (event.key === 'Enter') {
-                      this.addHistoryItem(input);
-                      event.preventDefault();
-                    }
-                  }}
-                  placeholder={`Search for ${'categories'}`}
-                />
-                {input !== '' ? (
-                  <span className="t_search-buttons-wrapper">
-                    <button
-                      type="button"
-                      className="t_search-button t_search-button-reset"
-                      onClick={this.clearInput}
-                    />
-                    <button
-                      type="button"
-                      className="t_search-button t_search-button-search"
-                      onClick={() => {
+        <div className="t_search-field-wrapper">
+          <div className="t_search-field-active">
+            <div
+              className="t_search-box-container"
+              onClick={(event) => {
+                event.stopPropagation();
+                this.unselectSearchBar();
+              }}
+            >
+              <form className="t_search-form">
+                <div className="t_search-field">
+                  <input
+                    type="text"
+                    value={input}
+                    autoFocus
+                    className={`${selected} t_input-bar`}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      this.selectSearchBar();
+                    }}
+                    onChange={this.onTyping}
+                    onKeyPress={(event) => {
+                      if (event.key === 'Enter') {
+                        event.preventDefault();
                         this.addHistoryItem(input);
-                      }}
+                      }
+                    }}
+                  />
+                  {inputEmpty ? (
+                    <FadingPlaceholder
+                      currentActive={currentPlaceholder}
+                      onClick={this.selectModal}
                     />
-                  </span>
-                ) : null}
-              </div>
-            </form>
-            <div className="t_under-search-container">
-              <div className="t_search-bar-area">
-                {history.length > 0 && input === ''
-                  ? (<HistoryList history={history} clearHistory={this.clearHistory} />) : null }
-                {input === '' ? <PopularSearches popularSearches={popularSearches} isFirstChild={isFirstChild} /> : null}
-                {input !== '' ? <AutoFillList autoFillOptions={autoFillOptions} currentInput={input} /> : null }
-                {input !== '' ? <CategoryLinks linksList={linksList} /> : null }
-                {input !== '' && suggestedItems.length > 0
-                  ? (
-                    <SuggestedList
-                      suggestedItems={suggestedItems}
-                      selectSearchedItem={this.selectSearchedItem}
-                    />
-                  ) : null }
+                  ) : null}
+                  {input !== '' ? (
+                    <span className="t_search-buttons-wrapper">
+                      <button
+                        type="button"
+                        className="t_search-button t_search-button-reset"
+                        onClick={this.clearInput}
+                      />
+                      <button
+                        type="button"
+                        className="t_search-button t_search-button-search"
+                        onClick={() => {
+                          this.addHistoryItem(input);
+                        }}
+                      />
+                    </span>
+                  ) : null}
+                </div>
+              </form>
+              <div className="t_under-search-container">
+                <div className="t_search-bar-area">
+                  {inputEmpty && history.length > 0
+                    ? (<HistoryList history={history} clearHistory={this.clearHistory} />) : null }
+                  {inputEmpty
+                    ? (
+                      <PopularSearches
+                        popularSearches={popularSearches}
+                        isFirstChild={isFirstChild}
+                      />
+                    ) : null}
+                  {!inputEmpty
+                    ? (
+                      <AutoFillList
+                        autoFillOptions={autoFillOptions}
+                        currentInput={input}
+                        goToMeatballs={this.goToMeatballs}
+                      />
+                    ) : null }
+                  {!inputEmpty ? <CategoryLinks linksList={linksList} /> : null }
+                  {!inputEmpty && suggestedItems.length > 0
+                    ? (
+                      <SuggestedList
+                        suggestedItems={suggestedItems}
+                        selectSearchedItem={this.selectSearchedItem}
+                      />
+                    ) : null }
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <Breadcrumb currentItem={currentItem} />
       </div>
     ) : (
       <div className="t_all-wrapper">
         <header className="t_header">
           <HeaderLinks />
-          <NavBar />
+          <NavBar
+            cartCount={cartCount}
+            unselectSearchBar={this.unselectSearchBar}
+            unselectModal={this.unselectModal}
+          />
         </header>
         <div className="t_search-field-wrapper">
-          <div className="t_search-field">
-            <input type="text" value={input} readOnly className="t_unselectedInput t_input-bar" onClick={this.selectModal} placeholder="Search for categories" />
+          <div className="t_search-field t_search-field-inactive">
+            <input
+              type="text"
+              value={input}
+              className="t_unselectedInput t_input-bar"
+              onClick={this.selectModal}
+              readOnly
+            />
+            {inputEmpty ? (
+              <FadingPlaceholder
+                currentActive={currentPlaceholder}
+                onClick={this.selectModal}
+              />
+            ) : null}
           </div>
         </div>
+        <Breadcrumb currentItem={currentItem} />
       </div>
     );
   }

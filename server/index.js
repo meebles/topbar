@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const model = require('../db/model');
 const path = require('path');
+const model = require('../db/model');
 
 const app = express();
 
@@ -14,7 +14,7 @@ app.get('/products', (req, res) => {
   model
     .getAllProducts()
     .then((data) => {
-      res.send(data);
+      res.send(data); // names currently not having correct characters
     })
     .catch((err) => {
       res.send(err);
@@ -67,14 +67,14 @@ app.get('/sources/fonts/NotoSans-Regular.tff', (req, res) => {
 });
 
 app.get('/sources/fonts/NotoSans-Bold.tff', (req, res) => {
-  res.sendFile(path.join(__dirname, '../dist', '/fonts', 'NotoSans-Bold.tff'));
+  res.sendFile(path.join(__dirname, '../dist/fonts/NotoSans-Bold.tff'));
 });
 
 app.listen(process.env.PORT, (err) => {
   if (err) {
     console.log(err);
   } else {
-    console.log('Listening on server port...');
+    console.log(`Listening on port ${process.env.PORT}...`);
   }
 });
 
