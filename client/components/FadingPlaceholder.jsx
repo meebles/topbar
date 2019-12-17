@@ -37,7 +37,6 @@ const FadingPlaceholder = ({ currentActive }) => {
   );
 };
 
-
 FadingPlaceholder.propTypes = {
   currentActive: T.number.isRequired,
 };
